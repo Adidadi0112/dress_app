@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 /// A custom button widget that follows the design system
 ///
-/// This button uses the theme's primary color and includes a gentle spring animation
-/// when pressed. It automatically adapts to light and dark themes.
+/// This button uses the theme's primary color and automatically adapts to light and dark themes.
 class MyButton extends StatelessWidget {
   final String title;
   final Function()? onTap;
@@ -33,7 +31,7 @@ class MyButton extends StatelessWidget {
           vertical: isSmall ? SpacingTokens.space12 : SpacingTokens.space16,
           horizontal: isSmall ? SpacingTokens.space16 : SpacingTokens.space24,
         ),
-        margin: EdgeInsets.symmetric(horizontal: SpacingTokens.space8),
+        margin: const EdgeInsets.symmetric(horizontal: SpacingTokens.space16),
         decoration: BoxDecoration(
           color: isOutlined
               ? Colors.transparent
@@ -89,16 +87,6 @@ class MyButton extends StatelessWidget {
                 ),
         ),
       ),
-    )
-        .animate(
-          onPlay: (controller) => controller.repeat(reverse: true),
-        )
-        .scale(
-          begin: const Offset(1.0, 1.0),
-          end: const Offset(1.03, 1.03),
-          duration: 150.ms,
-          curve: Curves.easeInOut,
-        )
-        .then(delay: 2000.ms); // Only animate on hover/press in a real app
+    );
   }
 }
