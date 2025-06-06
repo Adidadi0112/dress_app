@@ -6,6 +6,7 @@ import 'package:dress_app/auth/login_or_register.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
 import 'package:dress_app/blocs/item/item_event.dart';
 import 'package:dress_app/blocs/outings/outings_bloc.dart';
+import 'package:dress_app/blocs/friends/friends_bloc.dart';
 import 'package:dress_app/themes/theme_provider.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 
@@ -18,6 +19,7 @@ void main() {
         BlocProvider<ItemBloc>(create: (_) => ItemBloc()..add(FetchItems())),
         BlocProvider<OutingsBloc>(
             create: (_) => OutingsBloc()..add(LoadOutings())),
+        BlocProvider<FriendsBloc>(create: (_) => FriendsBloc()),
       ],
       child: MultiProvider(
         providers: [

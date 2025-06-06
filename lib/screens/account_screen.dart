@@ -1,5 +1,6 @@
 import 'package:dress_app/screens/wardrobe_screen.dart';
 import 'package:dress_app/screens/outings/outings_screen.dart';
+import 'package:dress_app/screens/friends/friends_screen.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +57,28 @@ class AccountScreen extends StatelessWidget {
                   CircleAvatar(child: Icon(Icons.event)),
                   const SizedBox(width: 40),
                   Text("My Outings"),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const FriendsScreen()),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.all(25),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(child: Icon(Icons.people)),
+                  const SizedBox(width: 40),
+                  Text("My Friends"),
                 ],
               ),
             ),

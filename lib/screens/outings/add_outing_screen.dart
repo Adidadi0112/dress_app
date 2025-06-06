@@ -1,9 +1,14 @@
+import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/models/outing.dart';
 import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/friend.dart';
 import 'package:dress_app/blocs/outings/outings_bloc.dart';
+import 'package:dress_app/blocs/friends/friends_bloc.dart';
+import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/screens/outings/select_clothes_screen.dart';
+import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 import 'package:intl/intl.dart';
 
 class AddOutingScreen extends StatefulWidget {
@@ -21,6 +26,7 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   List<ClothingItem> _selectedClothes = [];
+  List<Friend> _invitedFriends = [];
 
   @override
   void dispose() {
@@ -86,6 +92,73 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
     }
   }
 
+  Future<void> _inviteFriends(BuildContext context) async {
+    // Make sure the FriendsBloc is loaded
+    context.read<FriendsBloc>().add(LoadFriends());
+
+    // Create a temporary outing object for the invite screen
+    // This is needed because we're inviting to an event that doesn't exist yet
+    final tempOuting = Outing(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      location: _locationController.text.isEmpty
+          ? 'New Event'
+          : _locationController.text,
+      date: _selectedDate,
+      participants: _participantsController.text.isEmpty
+          ? []
+          : _participantsController.text
+              .split(',')
+              .map((e) => e.trim())
+              .toList(),
+      wornItems: _selectedClothes,
+      foodNotes:
+          _foodNotesController.text.isEmpty ? null : _foodNotesController.text,
+      isPast: false,
+    );
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => InviteToEventScreen(outing: tempOuting),
+      ),
+    );
+
+    if (result != null && result is Map<String, dynamic>) {
+      final List<Friend> selectedFriends = result['friends'] as List<Friend>;
+
+      if (selectedFriends.isNotEmpty) {
+        setState(() {
+          _invitedFriends = selectedFriends;
+
+          // Update participants field with friend names
+          final currentParticipants = _participantsController.text.isEmpty
+              ? []
+              : _participantsController.text
+                  .split(',')
+                  .map((e) => e.trim())
+                  .toList();
+
+          final friendNames = _invitedFriends.map((f) => f.name).toList();
+
+          // Combine existing participants with friend names, avoiding duplicates
+          final allParticipants = {...currentParticipants, ...friendNames};
+
+          _participantsController.text = allParticipants.join(', ');
+        });
+
+        // Show confirmation
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Added ${selectedFriends.length} ${selectedFriends.length == 1 ? 'friend' : 'friends'} to your event',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +218,15 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
                 _selectedClothes.isEmpty
                     ? 'Select Clothes'
                     : 'Selected Clothes: ${_selectedClothes.length}',
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => _inviteFriends(context),
+              child: Text(
+                _invitedFriends.isEmpty
+                    ? 'Invite Friends'
+                    : 'Invited Friends: ${_invitedFriends.length}',
               ),
             ),
             const SizedBox(height: 32),
