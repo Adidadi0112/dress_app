@@ -41,13 +41,13 @@ class _SelectClothesScreenState extends State<SelectClothesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wybierz ubrania'),
+        title: const Text('Select Clothes'),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context, _selectedItems);
             },
-            child: const Text('Zatwierdź'),
+            child: const Text('Confirm'),
           ),
         ],
       ),

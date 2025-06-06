@@ -89,7 +89,7 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Dodaj nowe wyjście')),
+      appBar: AppBar(title: const Text('Add New Outing')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -98,12 +98,12 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
             TextFormField(
               controller: _locationController,
               decoration: const InputDecoration(
-                labelText: 'Miejsce',
+                labelText: 'Location',
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Proszę podać miejsce';
+                  return 'Please enter a location';
                 }
                 return null;
               },
@@ -111,13 +111,13 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
             const SizedBox(height: 16),
             ListTile(
               title: Text(
-                'Data: ${DateFormat('dd.MM.yyyy').format(_selectedDate)}',
+                'Date: ${DateFormat('dd.MM.yyyy').format(_selectedDate)}',
               ),
               trailing: const Icon(Icons.calendar_today),
               onTap: () => _selectDate(context),
             ),
             ListTile(
-              title: Text('Godzina: ${_selectedTime.format(context)}'),
+              title: Text('Time: ${_selectedTime.format(context)}'),
               trailing: const Icon(Icons.access_time),
               onTap: () => _selectTime(context),
             ),
@@ -125,7 +125,7 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
             TextFormField(
               controller: _participantsController,
               decoration: const InputDecoration(
-                labelText: 'Uczestnicy (oddzieleni przecinkami)',
+                labelText: 'Participants (separated by commas)',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -133,7 +133,7 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
             TextFormField(
               controller: _foodNotesController,
               decoration: const InputDecoration(
-                labelText: 'Notatki o jedzeniu',
+                labelText: 'Food Notes',
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -143,8 +143,8 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
               onPressed: () => _selectClothes(context),
               child: Text(
                 _selectedClothes.isEmpty
-                    ? 'Wybierz ubrania'
-                    : 'Wybrane ubrania: ${_selectedClothes.length}',
+                    ? 'Select Clothes'
+                    : 'Selected Clothes: ${_selectedClothes.length}',
               ),
             ),
             const SizedBox(height: 32),
@@ -171,7 +171,7 @@ class _AddOutingScreenState extends State<AddOutingScreen> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Zapisz wyjście'),
+              child: const Text('Save Outing'),
             ),
           ],
         ),

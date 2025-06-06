@@ -64,7 +64,7 @@ class BottomAppBarMobileWidgetState extends State<BottomAppBarMobileWidget> {
                         ),
                       );
                     }, optionIndexModel.selectedOptionIndex == 1),
-                    option("Konto", () {
+                    option("Account", () {
                       setState(() {
                         optionIndexModel.selectOption(2);
                       });
@@ -88,15 +88,14 @@ class BottomAppBarMobileWidgetState extends State<BottomAppBarMobileWidget> {
 Widget option(String name, Function() onPressed, bool isChosen) {
   return Container(
     height: 35,
-    decoration:
-        isChosen
-            ? ShapeDecoration(
-              color: Color(0xFF7D6CDA),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(23.81),
-              ),
-            )
-            : null,
+    decoration: isChosen
+        ? ShapeDecoration(
+            color: Color(0xFF7D6CDA),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(23.81),
+            ),
+          )
+        : null,
     child: Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,

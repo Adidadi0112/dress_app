@@ -3,6 +3,7 @@ import 'package:dress_app/service/api.dart';
 import 'package:dress_app/widgets/my_button.dart';
 import 'package:dress_app/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterScreen extends StatelessWidget {
   final nameController = TextEditingController();
@@ -69,7 +70,11 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(height: 25),
 
               // logo
-              const Icon(Icons.lock, size: 100),
+              SvgPicture.asset(
+                'assets/images/logo.svg',
+                height: 100,
+                width: 100,
+              ),
 
               const SizedBox(height: 25),
 

@@ -16,14 +16,14 @@ class PastOutingsScreen extends StatelessWidget {
         }
 
         if (state is OutingsError) {
-          return Center(child: Text('Błąd: ${state.message}'));
+          return Center(child: Text('Error: ${state.message}'));
         }
 
         if (state is OutingsLoaded) {
           final outings = state.pastOutings;
 
           if (outings.isEmpty) {
-            return const Center(child: Text('Brak poprzednich wyjść'));
+            return const Center(child: Text('No past outings'));
           }
 
           return ListView.builder(
@@ -32,19 +32,20 @@ class PastOutingsScreen extends StatelessWidget {
               final outing = outings[index];
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: Theme.of(context).colorScheme.secondary,
                 child: ListTile(
                   title: Text(outing.location),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(DateFormat('dd.MM.yyyy HH:mm').format(outing.date)),
-                      Text('Uczestnicy: ${outing.participants.join(", ")}'),
+                      Text('Participants: ${outing.participants.join(", ")}'),
                       if (outing.wornItems.isNotEmpty)
                         Text(
-                          'Ubrane rzeczy: ${outing.wornItems.map((item) => item.name).join(", ")}',
+                          'Worn items: ${outing.wornItems.map((item) => item.name).join(", ")}',
                         ),
                       if (outing.foodNotes != null)
-                        Text('Notatki o jedzeniu: ${outing.foodNotes}'),
+                        Text('Food notes: ${outing.foodNotes}'),
                     ],
                   ),
                   onTap: () {
@@ -56,7 +57,7 @@ class PastOutingsScreen extends StatelessWidget {
           );
         }
 
-        return const Center(child: Text('Nieznany stan'));
+        return const Center(child: Text('Unknown state'));
       },
     );
   }

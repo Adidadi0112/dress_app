@@ -13,7 +13,7 @@ class WardrobeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Garderoba"), centerTitle: true),
+      appBar: AppBar(title: const Text("Wardrobe"), centerTitle: true),
       body: BlocBuilder<ItemBloc, ItemState>(
         builder: (context, state) {
           if (state is ItemLoaded) {

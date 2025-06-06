@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // Profil użytkownika
+          // User profile
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
@@ -61,15 +61,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: const EdgeInsets.only(right: 8),
                   child: const CircleAvatar(child: Icon(Icons.person)),
                 ),
-                const Text('Witaj!\nMarta Wilgosz'),
+                const Text('Welcome!\nMarta Wilgosz'),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          const Center(child: Text('Moja kolekcja')),
+          const Center(child: Text('My Collection')),
           const SizedBox(height: 16),
 
-          // Widok kolekcji
+          // Collection view
           BlocBuilder<ItemBloc, ItemState>(
             builder: (context, state) {
               if (state is ItemLoaded && state.items.isNotEmpty) {
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 );
               } else if (state is ItemLoaded && state.items.isEmpty) {
-                return const Center(child: Text("Szafa na razie jest pusta"));
+                return const Center(child: Text("Your wardrobe is empty"));
               } else {
                 return const Center(child: CircularProgressIndicator());
               }

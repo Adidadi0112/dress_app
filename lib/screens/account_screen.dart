@@ -11,7 +11,7 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Konto'),
+        title: const Text('Account'),
         centerTitle: true,
       ),
       body: Column(
@@ -33,7 +33,7 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(child: Icon(Icons.star)),
                   const SizedBox(width: 40),
-                  Text("Moja Garderoba"),
+                  Text("My Wardrobe"),
                 ],
               ),
             ),
@@ -55,7 +55,7 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(child: Icon(Icons.event)),
                   const SizedBox(width: 40),
-                  Text("Moje Wyjścia"),
+                  Text("My Outings"),
                 ],
               ),
             ),

@@ -309,8 +309,9 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
           style: Theme.of(context).textTheme.bodySmall,
         ),
         SizedBox(height: SpacingTokens.space12),
+        // Simplified color picker to avoid overflow
         Container(
-          height: 150,
+          height: 50,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(RadiusTokens.radiusMd),
@@ -321,17 +322,115 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(RadiusTokens.radiusMd),
-            child: ColorPicker(
-              pickerColor: currentColor,
-              onColorChanged: onColorChanged,
-              pickerAreaHeightPercent: 1.0,
-              enableAlpha: false,
-              displayThumbColor: true,
-              paletteType: PaletteType.hsl,
-              pickerAreaBorderRadius:
-                  BorderRadius.circular(RadiusTokens.radiusMd),
-              labelTypes: const [],
+            child: Material(
+              child: BlockPicker(
+                pickerColor: currentColor,
+                onColorChanged: onColorChanged,
+                availableColors: [
+                  // Available colors from ColorTokens
+                  ColorTokens.rosePetal,
+                  ColorTokens.lavenderMist,
+                  ColorTokens.mintFoam,
+                  ColorTokens.lightPrimary,
+                  ColorTokens.lightSecondary,
+                  ColorTokens.lightAccent,
+                  ColorTokens.darkPrimary,
+                  ColorTokens.darkSecondary,
+                  ColorTokens.darkAccent,
+                  ColorTokens.success,
+                  ColorTokens.info,
+                  ColorTokens.warning,
+                  ColorTokens.error,
+                  // Additional pastel colors
+                  const Color(0xFFF5E1FF), // Soft purple
+                  const Color(0xFFFFE1E1), // Soft pink
+                  const Color(0xFFE1FFFA), // Soft teal
+                ],
+                layoutBuilder: (context, colors, child) {
+                  return SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: GridView.count(
+                      crossAxisCount: 8,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      padding: const EdgeInsets.all(5),
+                      children: [
+                        for (Color color in colors) child(color),
+                      ],
+                    ),
+                  );
+                },
+                itemBuilder: (color, isSelected, onSelect) {
+                  return InkWell(
+                    onTap: onSelect,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                        border: isSelected
+                            ? Border.all(color: Colors.black, width: 2)
+                            : null,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
+          ),
+        ),
+        // Color slider for fine-tuning
+        const SizedBox(height: SpacingTokens.space8),
+        SizedBox(
+          height: 40,
+          width: double.infinity,
+          child: Row(
+            children: [
+              Expanded(
+                child: SliderTheme(
+                  data: SliderThemeData(
+                    activeTrackColor: currentColor,
+                    inactiveTrackColor:
+                        currentColor.withAlpha(76), // 0.3 opacity
+                    thumbColor: currentColor,
+                    overlayColor: currentColor.withAlpha(76), // 0.3 opacity
+                    trackHeight: 10,
+                    thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 10),
+                  ),
+                  child: Slider(
+                    value: HSLColor.fromColor(currentColor).hue,
+                    min: 0,
+                    max: 360,
+                    onChanged: (value) {
+                      final hslColor = HSLColor.fromColor(currentColor);
+                      final newColor = hslColor.withHue(value).toColor();
+                      onColorChanged(newColor);
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.only(left: SpacingTokens.space8),
+                decoration: BoxDecoration(
+                  color: currentColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outline,
+                    width: 1,
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x1A000000), // Black with 0.1 opacity
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ],

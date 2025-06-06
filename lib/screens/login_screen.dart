@@ -3,6 +3,7 @@ import 'package:dress_app/service/api.dart';
 import 'package:dress_app/widgets/my_button.dart';
 import 'package:dress_app/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatelessWidget {
   // text editing controllers
@@ -14,8 +15,8 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required this.onTap});
 
   void login(BuildContext context) async {
-    final navigator = Navigator.of(context); // Zapisz przed await
-    final scaffoldMessenger = ScaffoldMessenger.of(context); // do SnackBar
+    final navigator = Navigator.of(context); // Save before await
+    final scaffoldMessenger = ScaffoldMessenger.of(context); // for SnackBar
 
     final username = usernameController.text.trim();
     final password = passwordController.text.trim();
@@ -52,12 +53,16 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
 
               // logo
-              const Icon(Icons.checkroom, size: 100),
+              SvgPicture.asset(
+                'assets/images/logo.svg',
+                height: 200,
+                width: 200,
+              ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
 
               // welcome back, you've been missed!
               Text(

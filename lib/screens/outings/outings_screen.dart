@@ -12,11 +12,11 @@ class OutingsScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Moje wyjścia'),
+          title: const Text('My Outings'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Przeszłe wyjścia'),
-              Tab(text: 'Przyszłe wyjścia'),
+              Tab(text: 'Past Outings'),
+              Tab(text: 'Future Outings'),
             ],
           ),
         ),
