@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
@@ -79,12 +80,7 @@ class _SelectClothesScreenState extends State<SelectClothesScreen> {
 
                 return ListTile(
                   leading: item.imageUrl != null
-                      ? Image.network(
-                          item.imageUrl!,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        )
+                      ? _buildImageWidget(item.imageUrl!, 50, 50)
                       : const Icon(Icons.image_not_supported),
                   title: Text(item.name),
                   subtitle: Text((item.categories ?? []).join(', ')),
@@ -118,5 +114,33 @@ class _SelectClothesScreenState extends State<SelectClothesScreen> {
         },
       ),
     );
+  }
+
+  Widget _buildImageWidget(String imagePath, double width, double height) {
+    // Check if the path is a local file path
+    if (imagePath.startsWith('/')) {
+      return Image.file(
+        File(imagePath),
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading local image: $error');
+          return const Icon(Icons.image_not_supported);
+        },
+      );
+    } else {
+      // Assume it's a network URL
+      return Image.network(
+        imagePath,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading network image: $error');
+          return const Icon(Icons.image_not_supported);
+        },
+      );
+    }
   }
 }
