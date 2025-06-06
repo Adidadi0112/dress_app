@@ -2,31 +2,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/models/friend.dart';
+import 'package:dress_app/services/user_service.dart';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
-  // Mock data for demonstration purposes
-  final List<Friend> _mockFriends = [
-    Friend(
-      id: '1',
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      avatarUrl: null,
-    ),
-    Friend(
-      id: '2',
-      name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      avatarUrl: null,
-    ),
-    Friend(
-      id: '3',
-      name: 'Mike Johnson',
-      email: 'mike.johnson@example.com',
-      avatarUrl: null,
-    ),
-  ];
+  final UserService _userService = UserService();
 
-  final List<Friend> _mockPendingInvites = [
+  // We'll keep a local cache of friends
+  final List<Friend> _friends = [];
+
+  // We'll still use mock data for pending invites since the API doesn't support this
+  final List<Friend> _pendingInvites = [
     Friend(
       id: '4',
       name: 'Sarah Williams',
@@ -46,13 +31,19 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     on<RejectFriendInvite>(_onRejectFriendInvite);
   }
 
-  void _onLoadFriends(LoadFriends event, Emitter<FriendsState> emit) {
+  void _onLoadFriends(LoadFriends event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
-      // In a real app, you would fetch friends from an API or database
+      // Fetch users from the API
+      final users = await _userService.getUsers();
+
+      // Update our local cache
+      _friends.clear();
+      _friends.addAll(users);
+
       emit(FriendsLoaded(
-        friends: List.from(_mockFriends),
-        pendingInvites: List.from(_mockPendingInvites),
+        friends: List.from(_friends),
+        pendingInvites: List.from(_pendingInvites),
       ));
     } catch (e) {
       emit(FriendsError('Failed to load friends: ${e.toString()}'));
@@ -63,10 +54,12 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     final currentState = state;
     if (currentState is FriendsLoaded) {
       try {
-        final updatedFriends = List<Friend>.from(currentState.friends)
-          ..add(event.friend);
+        // In a real app, you would add the friend to the database
+        // For now, we'll just add it to our local cache
+        _friends.add(event.friend);
+
         emit(FriendsLoaded(
-          friends: updatedFriends,
+          friends: List.from(_friends),
           pendingInvites: currentState.pendingInvites,
         ));
       } catch (e) {
@@ -79,11 +72,12 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     final currentState = state;
     if (currentState is FriendsLoaded) {
       try {
-        final updatedFriends = currentState.friends
-            .where((friend) => friend.id != event.friendId)
-            .toList();
+        // In a real app, you would remove the friend from the database
+        // For now, we'll just remove it from our local cache
+        _friends.removeWhere((friend) => friend.id == event.friendId);
+
         emit(FriendsLoaded(
-          friends: updatedFriends,
+          friends: List.from(_friends),
           pendingInvites: currentState.pendingInvites,
         ));
       } catch (e) {
@@ -96,11 +90,16 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     final currentState = state;
     if (currentState is FriendsLoaded) {
       try {
-        final updatedFriends = currentState.friends.map((friend) {
-          return friend.id == event.friend.id ? event.friend : friend;
-        }).toList();
+        // In a real app, you would update the friend in the database
+        // For now, we'll just update it in our local cache
+        final index =
+            _friends.indexWhere((friend) => friend.id == event.friend.id);
+        if (index != -1) {
+          _friends[index] = event.friend;
+        }
+
         emit(FriendsLoaded(
-          friends: updatedFriends,
+          friends: List.from(_friends),
           pendingInvites: currentState.pendingInvites,
         ));
       } catch (e) {
@@ -114,6 +113,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (currentState is FriendsLoaded) {
       try {
         // In a real app, you would send an invite through an API
+        // For now, we'll just add it to our local pending invites
         final newInvite = Friend(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           name: event.name,
@@ -121,12 +121,11 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
           isConfirmed: false,
         );
 
-        final updatedPendingInvites =
-            List<Friend>.from(currentState.pendingInvites)..add(newInvite);
+        _pendingInvites.add(newInvite);
 
         emit(FriendsLoaded(
           friends: currentState.friends,
-          pendingInvites: updatedPendingInvites,
+          pendingInvites: List.from(_pendingInvites),
         ));
         emit(FriendInviteSent(event.email));
       } catch (e) {
@@ -141,24 +140,21 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (currentState is FriendsLoaded) {
       try {
         // Find the invite
-        final invite = currentState.pendingInvites
-            .firstWhere((invite) => invite.id == event.friendId);
+        final invite =
+            _pendingInvites.firstWhere((invite) => invite.id == event.friendId);
 
         // Create a confirmed friend from the invite
         final confirmedFriend = invite.copyWith(isConfirmed: true);
 
         // Remove from pending invites
-        final updatedPendingInvites = currentState.pendingInvites
-            .where((invite) => invite.id != event.friendId)
-            .toList();
+        _pendingInvites.removeWhere((invite) => invite.id == event.friendId);
 
         // Add to friends
-        final updatedFriends = List<Friend>.from(currentState.friends)
-          ..add(confirmedFriend);
+        _friends.add(confirmedFriend);
 
         emit(FriendsLoaded(
-          friends: updatedFriends,
-          pendingInvites: updatedPendingInvites,
+          friends: List.from(_friends),
+          pendingInvites: List.from(_pendingInvites),
         ));
         emit(FriendInviteAccepted(confirmedFriend));
       } catch (e) {
@@ -173,13 +169,11 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (currentState is FriendsLoaded) {
       try {
         // Remove from pending invites
-        final updatedPendingInvites = currentState.pendingInvites
-            .where((invite) => invite.id != event.friendId)
-            .toList();
+        _pendingInvites.removeWhere((invite) => invite.id == event.friendId);
 
         emit(FriendsLoaded(
           friends: currentState.friends,
-          pendingInvites: updatedPendingInvites,
+          pendingInvites: List.from(_pendingInvites),
         ));
         emit(FriendInviteRejected(event.friendId));
       } catch (e) {

@@ -43,11 +43,22 @@ class Friend {
 
   factory Friend.fromJson(Map<String, dynamic> json) {
     return Friend(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
       avatarUrl: json['avatarUrl'],
       isConfirmed: json['isConfirmed'] ?? true,
+    );
+  }
+
+  // Create a Friend from the API response
+  factory Friend.fromApiJson(Map<String, dynamic> json) {
+    return Friend(
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      avatarUrl: null, // API doesn't provide avatar URL
+      isConfirmed: true, // All users from API are considered confirmed
     );
   }
 }

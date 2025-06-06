@@ -1,3 +1,4 @@
+import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,8 @@ void main() {
         BlocProvider<ItemBloc>(create: (_) => ItemBloc()..add(FetchItems())),
         BlocProvider<OutingsBloc>(
             create: (_) => OutingsBloc()..add(LoadOutings())),
-        BlocProvider<FriendsBloc>(create: (_) => FriendsBloc()),
+        BlocProvider<FriendsBloc>(
+            create: (_) => FriendsBloc()..add(LoadFriends())),
       ],
       child: MultiProvider(
         providers: [
