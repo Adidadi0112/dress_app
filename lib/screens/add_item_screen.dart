@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:dress_app/widgets/my_button.dart';
+import 'package:dress_app/widgets/modern_text_field.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
+import 'package:dress_app/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +10,7 @@ import 'package:dress_app/models/item.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
 import 'package:dress_app/blocs/item/item_event.dart';
 import 'package:dress_app/blocs/item/item_state.dart';
+import 'package:dress_app/theme/tokens.dart';
 
 class AddItemScreen extends StatefulWidget {
   const AddItemScreen({super.key});
@@ -68,33 +72,125 @@ class _AddItemScreenState extends State<AddItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Dodaj ciuch")),
+      appBar: AppBar(
+        title: Text(
+          'Add Item',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(SpacingTokens.space16),
         child: ListView(
           children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nazwa'),
+            EnhancedCard(
+              child: Padding(
+                padding: const EdgeInsets.all(SpacingTokens.space16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Item Details',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: SpacingTokens.space16),
+                    ModernTextField(
+                      controller: _nameController,
+                      label: 'Item Name',
+                      prefixIcon: Icons.label,
+                    ),
+                    const SizedBox(height: SpacingTokens.space16),
+                    ModernTextField(
+                      controller: _categoryController,
+                      label: 'Category',
+                      prefixIcon: Icons.category,
+                    ),
+                    const SizedBox(height: SpacingTokens.space16),
+                    ModernTextField(
+                      controller: _descriptionController,
+                      label: 'Description',
+                      prefixIcon: Icons.description,
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextField(
-              controller: _categoryController,
-              decoration: const InputDecoration(labelText: 'Kategoria'),
+            const SizedBox(height: SpacingTokens.space16),
+            EnhancedCard(
+              child: Padding(
+                padding: const EdgeInsets.all(SpacingTokens.space16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Item Photo',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: SpacingTokens.space16),
+                    _selectedImage != null
+                        ? Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                              image: DecorationImage(
+                                image: FileImage(File(_selectedImage!.path)),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            height: 150,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceVariant,
+                              borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.outline,
+                                width: 2,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  size: 48,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                ),
+                                const SizedBox(height: SpacingTokens.space8),
+                                Text(
+                                  'Tap to select photo',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    const SizedBox(height: SpacingTokens.space16),
+                    GradientButton(
+                      onPressed: _pickImage,
+                      text: _selectedImage != null ? 'Change Photo' : 'Select Photo',
+                      icon: Icons.photo_camera,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Opis'),
+            const SizedBox(height: SpacingTokens.space24),
+            GradientButton(
+              onPressed: _submit,
+              text: 'Add Item',
+              icon: Icons.add,
             ),
-            const SizedBox(height: 12),
-            _selectedImage != null
-                ? Image.file(File(_selectedImage!.path), height: 150)
-                : TextButton.icon(
-                    onPressed: _pickImage,
-                    icon: const Icon(Icons.photo),
-                    label: const Text("Wybierz zdjęcie"),
-                  ),
-            const SizedBox(height: 16),
-            MyButton(title: "Dodaj", onTap: _submit),
           ],
         ),
       ),

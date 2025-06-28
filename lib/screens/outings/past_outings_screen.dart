@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/models/outing.dart';
 import 'package:dress_app/blocs/outings/outings_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
 
 class PastOutingsScreen extends StatelessWidget {
   const PastOutingsScreen({super.key});

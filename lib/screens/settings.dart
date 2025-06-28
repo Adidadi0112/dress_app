@@ -4,10 +4,10 @@ import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/themes/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:dress_app/service/auth_controller.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -177,10 +177,7 @@ class SettingsScreen extends StatelessWidget {
               fontFamily: TypographyTokens.displayFontFamily,
             ),
       ),
-    )
-        .animate()
-        .fadeIn(duration: 300.ms)
-        .slideX(begin: -0.1, end: 0, duration: 300.ms);
+    );
   }
 
   Widget _buildSettingCard(
@@ -191,11 +188,7 @@ class SettingsScreen extends StatelessWidget {
     Widget? trailing,
     VoidCallback? onTap,
   }) {
-    return Card(
-      margin: EdgeInsets.only(bottom: SpacingTokens.space12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      ),
+    return EnhancedCard(
       child: ListTile(
         contentPadding: EdgeInsets.all(SpacingTokens.space16),
         leading: Icon(
@@ -217,9 +210,6 @@ class SettingsScreen extends StatelessWidget {
         trailing: trailing,
         onTap: onTap,
       ),
-    )
-        .animate()
-        .fadeIn(duration: 300.ms, delay: 100.ms)
-        .slideY(begin: 0.1, end: 0, duration: 300.ms);
+    );
   }
 }

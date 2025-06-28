@@ -10,6 +10,10 @@ import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/screens/outings/select_clothes_screen.dart';
 import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
+import 'package:dress_app/widgets/modern_text_field.dart';
+import 'package:dress_app/widgets/gradient_button.dart';
 
 class AddOutingScreen extends StatefulWidget {
   const AddOutingScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:dress_app/models/outing.dart';
-
+import 'outings_event.dart';
+import 'outings_state.dart';
 // Events
 abstract class OutingsEvent extends Equatable {
   const OutingsEvent();
@@ -72,8 +72,6 @@ class OutingsError extends OutingsState {
 
 // Bloc
 class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
-  final List<Outing> _outings = [];
-
   OutingsBloc() : super(OutingsInitial()) {
     on<LoadOutings>(_onLoadOutings);
     on<AddOuting>(_onAddOuting);
@@ -81,35 +79,45 @@ class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
     on<DeleteOuting>(_onDeleteOuting);
   }
 
+  List<Outing> _outings = [];
+
   void _onLoadOutings(LoadOutings event, Emitter<OutingsState> emit) {
     emit(OutingsLoading());
-
-    final now = DateTime.now();
-    final pastOutings =
-        _outings.where((o) => o.date.isBefore(now)).toList()
-          ..sort((a, b) => b.date.compareTo(a.date));
-    final futureOutings =
-        _outings.where((o) => o.date.isAfter(now)).toList()
-          ..sort((a, b) => a.date.compareTo(b.date));
-
-    emit(OutingsLoaded(pastOutings: pastOutings, futureOutings: futureOutings));
+    try {
+      // In a real app, this would fetch from a database or API
+      emit(OutingsLoaded(_outings));
+    } catch (e) {
+      emit(OutingsError(e.toString()));
+    }
   }
 
   void _onAddOuting(AddOuting event, Emitter<OutingsState> emit) {
-    _outings.add(event.outing);
-    add(LoadOutings());
+    try {
+      _outings.add(event.outing);
+      emit(OutingsLoaded(List.from(_outings)));
+    } catch (e) {
+      emit(OutingsError(e.toString()));
+    }
   }
 
   void _onUpdateOuting(UpdateOuting event, Emitter<OutingsState> emit) {
-    final index = _outings.indexWhere((o) => o.id == event.outing.id);
-    if (index != -1) {
-      _outings[index] = event.outing;
-      add(LoadOutings());
+    try {
+      final index = _outings.indexWhere((o) => o.id == event.outing.id);
+      if (index != -1) {
+        _outings[index] = event.outing;
+        emit(OutingsLoaded(List.from(_outings)));
+      }
+    } catch (e) {
+      emit(OutingsError(e.toString()));
     }
   }
 
   void _onDeleteOuting(DeleteOuting event, Emitter<OutingsState> emit) {
-    _outings.removeWhere((o) => o.id == event.outingId);
-    add(LoadOutings());
+    try {
+      _outings.removeWhere((o) => o.id == event.id);
+      emit(OutingsLoaded(List.from(_outings)));
+    } catch (e) {
+      emit(OutingsError(e.toString()));
+    }
   }
 }

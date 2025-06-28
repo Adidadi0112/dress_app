@@ -1,4 +1,7 @@
 import 'package:dress_app/widgets/bottom_navigator.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
+import 'package:dress_app/widgets/modern_text_field.dart';
+import 'package:dress_app/theme/tokens.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessage {
@@ -25,81 +28,146 @@ class ChatScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('Chatbot'),
-        elevation: 1,
+        title: Text(
+          'Style Assistant',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.help_outline),
+            onPressed: () {
+              // Show help dialog
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          // Lista wiadomości
+          // Messages list
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 8.0,
-              ),
+              padding: const EdgeInsets.all(SpacingTokens.space16),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final msg = _messages[index];
-                return Align(
-                  alignment:
-                      msg.isMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4.0),
-                    padding: const EdgeInsets.all(12.0),
-                    constraints: const BoxConstraints(maxWidth: 250),
-                    decoration: BoxDecoration(
-                      color: msg.isMe ? Colors.grey[300] : Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Text(
-                      msg.text,
-                      style: const TextStyle(color: Colors.black87),
-                    ),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: SpacingTokens.space12),
+                  child: Row(
+                    mainAxisAlignment: msg.isMe 
+                        ? MainAxisAlignment.end 
+                        : MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!msg.isMe) ...[
+                        Container(
+                          padding: const EdgeInsets.all(SpacingTokens.space8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.assistant,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                        const SizedBox(width: SpacingTokens.space8),
+                      ],
+                      Flexible(
+                        child: EnhancedCard(
+                          child: Container(
+                            padding: const EdgeInsets.all(SpacingTokens.space12),
+                            decoration: BoxDecoration(
+                              color: msg.isMe 
+                                  ? Theme.of(context).colorScheme.primaryContainer
+                                  : Theme.of(context).colorScheme.surfaceVariant,
+                              borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                            ),
+                            child: Text(
+                              msg.text,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: msg.isMe
+                                        ? Theme.of(context).colorScheme.onPrimaryContainer
+                                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (msg.isMe) ...[
+                        const SizedBox(width: SpacingTokens.space8),
+                        Container(
+                          padding: const EdgeInsets.all(SpacingTokens.space8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.person,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 );
               },
             ),
           ),
-          // Pole tekstowe i przycisk wysyłania
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 16.0,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Type a message',
-                      fillColor: Colors.white,
-                      filled: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
+          
+          // Input area
+          EnhancedCard(
+            child: Container(
+              padding: const EdgeInsets.all(SpacingTokens.space16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                        borderSide: BorderSide.none,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Ask me about fashion...',
+                          hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: SpacingTokens.space16,
+                            vertical: SpacingTokens.space12,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8.0),
-                // Przykładowy przycisk wysyłania (tylko UI)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF7D6CDA),
-                    borderRadius: BorderRadius.circular(4.0),
+                  const SizedBox(width: SpacingTokens.space12),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.secondary,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        // TODO: Implement send message logic
+                      },
+                      icon: const Icon(Icons.send),
+                      color: Colors.white,
+                    ),
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      // Tu wstawisz logikę wysyłania wiadomości
-                    },
-                    icon: const Icon(Icons.send),
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

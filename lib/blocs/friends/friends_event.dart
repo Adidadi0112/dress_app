@@ -28,6 +28,16 @@ class RemoveFriend extends FriendsEvent {
   List<Object> get props => [friendId];
 }
 
+class InviteFriend extends FriendsEvent {
+  final String email;
+  final String name;
+
+  const InviteFriend({required this.email, required this.name});
+
+  @override
+  List<Object> get props => [email, name];
+}
+
 class UpdateFriend extends FriendsEvent {
   final Friend friend;
 

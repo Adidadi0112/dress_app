@@ -29,6 +29,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     on<SendFriendInvite>(_onSendFriendInvite);
     on<AcceptFriendInvite>(_onAcceptFriendInvite);
     on<RejectFriendInvite>(_onRejectFriendInvite);
+    on<InviteFriend>(_onInviteFriend);
   }
 
   void _onLoadFriends(LoadFriends event, Emitter<FriendsState> emit) async {
@@ -69,20 +70,11 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   }
 
   void _onRemoveFriend(RemoveFriend event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // In a real app, you would remove the friend from the database
-        // For now, we'll just remove it from our local cache
-        _friends.removeWhere((friend) => friend.id == event.friendId);
-
-        emit(FriendsLoaded(
-          friends: List.from(_friends),
-          pendingInvites: currentState.pendingInvites,
-        ));
-      } catch (e) {
-        emit(FriendsError('Failed to remove friend: ${e.toString()}'));
-      }
+    try {
+      _friends.removeWhere((friend) => friend.id == event.friendId);
+      emit(FriendsLoaded(List.from(_friends), List.from(_pendingInvites)));
+    } catch (e) {
+      emit(FriendsError(e.toString()));
     }
   }
 
@@ -179,6 +171,22 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
       } catch (e) {
         emit(FriendsError('Failed to reject invite: ${e.toString()}'));
       }
+    }
+  }
+
+  void _onInviteFriend(InviteFriend event, Emitter<FriendsState> emit) {
+    try {
+      // In a real app, this would send an invitation via API
+      // For now, we'll just add to pending invites
+      final newInvite = Friend(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: event.name,
+        email: event.email,
+      );
+      _pendingInvites.add(newInvite);
+      emit(FriendsLoaded(List.from(_friends), List.from(_pendingInvites)));
+    } catch (e) {
+      emit(FriendsError(e.toString()));
     }
   }
 }

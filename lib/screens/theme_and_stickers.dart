@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/themes/theme_provider.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class ThemeAndStickersScreen extends StatefulWidget {
   const ThemeAndStickersScreen({Key? key}) : super(key: key);
@@ -212,7 +211,7 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
                 );
               },
               child: Text('Apply Custom Theme'),
-            ).animate().fadeIn(duration: 300.ms).scale(delay: 150.ms),
+            ),
           ),
 
           SizedBox(height: SpacingTokens.space16),
@@ -268,8 +267,7 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
             ),
           ],
         ),
-      ).animate().fadeIn(duration: 300.ms).slideY(
-          begin: 0.2, end: 0, duration: 300.ms, curve: Curves.easeOutQuad),
+      ),
     );
   }
 
@@ -586,11 +584,7 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
         ),
       ),
     )
-        .animate()
-        .fadeIn(
-            duration: 300.ms,
-            delay: 100.ms * _availableStickers.indexOf(stickerName))
-        .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0));
+        ;
   }
 
   Widget _getStickerIcon(String stickerName) {

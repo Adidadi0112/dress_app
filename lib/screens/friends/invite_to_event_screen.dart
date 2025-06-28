@@ -223,3 +223,178 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
     });
   }
 }
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dress_app/blocs/friends/friends_bloc.dart';
+import 'package:dress_app/blocs/friends/friends_state.dart';
+import 'package:dress_app/blocs/outings/outings_bloc.dart';
+import 'package:dress_app/blocs/outings/outings_state.dart';
+import 'package:dress_app/models/friend.dart';
+import 'package:dress_app/models/outing.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
+import 'package:dress_app/widgets/gradient_button.dart';
+import 'package:dress_app/theme/tokens.dart';
+import 'package:intl/intl.dart';
+
+class InviteToEventScreen extends StatefulWidget {
+  final Outing? outing;
+
+  const InviteToEventScreen({Key? key, this.outing}) : super(key: key);
+
+  @override
+  State<InviteToEventScreen> createState() => _InviteToEventScreenState();
+}
+
+class _InviteToEventScreenState extends State<InviteToEventScreen> {
+  Outing? _selectedOuting;
+  List<Friend> _selectedFriends = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedOuting = widget.outing;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Invite to Event'),
+        actions: [
+          TextButton(
+            onPressed: _selectedOuting != null && _selectedFriends.isNotEmpty
+                ? () {
+                    Navigator.pop(context, {
+                      'outing': _selectedOuting,
+                      'friends': _selectedFriends,
+                    });
+                  }
+                : null,
+            child: const Text('Done'),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Event Selection
+          if (widget.outing == null) ...[
+            Padding(
+              padding: const EdgeInsets.all(SpacingTokens.space16),
+              child: EnhancedCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(SpacingTokens.space16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Select Event',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: SpacingTokens.space16),
+                      BlocBuilder<OutingsBloc, OutingsState>(
+                        builder: (context, state) {
+                          if (state is OutingsLoaded) {
+                            return Column(
+                              children: state.futureOutings.map((outing) {
+                                return RadioListTile<Outing>(
+                                  value: outing,
+                                  groupValue: _selectedOuting,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedOuting = value;
+                                    });
+                                  },
+                                  title: Text(outing.location),
+                                  subtitle: Text(
+                                    '${outing.location} - ${DateFormat('dd.MM.yyyy HH:mm').format(outing.date)}',
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+
+          // Friend Selection
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(SpacingTokens.space16),
+              child: EnhancedCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(SpacingTokens.space16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Select Friends',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: SpacingTokens.space16),
+                      Expanded(
+                        child: BlocBuilder<FriendsBloc, FriendsState>(
+                          builder: (context, state) {
+                            if (state is FriendsLoaded) {
+                              if (state.friends.isEmpty) {
+                                return const Center(
+                                  child: Text('No friends available'),
+                                );
+                              }
+
+                              return ListView.builder(
+                                itemCount: state.friends.length,
+                                itemBuilder: (context, index) {
+                                  final friend = state.friends[index];
+                                  final isSelected = _selectedFriends.contains(friend);
+
+                                  return CheckboxListTile(
+                                    value: isSelected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          _selectedFriends.add(friend);
+                                        } else {
+                                          _selectedFriends.remove(friend);
+                                        }
+                                      });
+                                    },
+                                    title: Text(friend.name),
+                                    subtitle: Text(friend.email),
+                                    secondary: CircleAvatar(
+                                      backgroundColor: Theme.of(context).colorScheme.primary,
+                                      child: Text(friend.name[0]),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+
+                            if (state is FriendsError) {
+                              return Center(child: Text('Error: ${state.message}'));
+                            }
+
+                            return const Center(child: CircularProgressIndicator());
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

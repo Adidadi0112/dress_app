@@ -7,6 +7,8 @@ import 'package:dress_app/blocs/outings/outings_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_bloc.dart';
 import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/widgets/enhanced_card.dart';
 
 class FutureOutingsScreen extends StatelessWidget {
   const FutureOutingsScreen({super.key});
