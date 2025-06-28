@@ -1,0 +1,46 @@
+lib/themes/custom_pastel_mode.dart:97:14: Error: Not a constant expression.
+      color: surfaceColor,
+             ^^^^^^^^^^^^
+lib/themes/custom_pastel_mode.dart:100:36: Error: Cannot invoke a non-'const' constructor where a const expression is
+expected.
+Try using a constructor or factory that is 'const'.
+        borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
+                                   ^^^^^^^^
+lib/themes/custom_pastel_mode.dart:102:18: Error: Not a constant expression.
+          color: borderColor,
+                 ^^^^^^^^^^^
+lib/themes/custom_pastel_mode.dart:205:19: Error: Not a constant expression.
+      labelColor: textColor,
+                  ^^^^^^^^^
+lib/themes/custom_pastel_mode.dart:206:29: Error: Not a constant expression.
+      unselectedLabelColor: textSecondaryColor,
+                            ^^^^^^^^^^^^^^^^^^
+lib/themes/custom_pastel_mode.dart:207:23: Error: Not a constant expression.
+      indicatorColor: adjustedPrimary,
+                      ^^^^^^^^^^^^^^^
+lib/themes/custom_pastel_mode.dart:209:31: Error: Method invocation is not a constant expression.
+      labelStyle: GoogleFonts.inter(
+                              ^^^^^
+lib/themes/custom_pastel_mode.dart:213:41: Error: Method invocation is not a constant expression.
+      unselectedLabelStyle: GoogleFonts.inter(
+                                        ^^^^^
+lib/themes/dark_mode.dart:68:34: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
+                                 ^^^^^^^^
+lib/themes/dark_mode.dart:178:29: Error: Method invocation is not a constant expression.
+    labelStyle: GoogleFonts.inter(
+                            ^^^^^
+lib/themes/dark_mode.dart:182:39: Error: Method invocation is not a constant expression.
+    unselectedLabelStyle: GoogleFonts.inter(
+                                      ^^^^^
+lib/themes/light_mode.dart:68:34: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
+                                 ^^^^^^^^
+lib/themes/light_mode.dart:177:29: Error: Method invocation is not a constant expression.
+    labelStyle: GoogleFonts.inter(
+                            ^^^^^
+lib/themes/light_mode.dart:181:39: Error: Method invocation is not a constant expression.
+    unselectedLabelStyle: GoogleFonts.inter(
+                                      ^^^^^
