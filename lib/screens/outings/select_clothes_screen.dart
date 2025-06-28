@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dress_app/blocs/item/item_bloc.dart';
-import 'package:dress_app/blocs/item/item_state.dart';
-import 'package:dress_app/models/clothing_item.dart';
-import 'package:dress_app/models/item.dart';
-import 'package:dress_app/widgets/enhanced_card.dart';
-import 'package:dress_app/widgets/gradient_button.dart';
-import 'package:dress_app/theme/tokens.dart';
+import '../../blocs/item/item_bloc.dart';
+import '../../blocs/item/item_state.dart';
+import '../../models/item.dart';
+import '../../models/outing.dart';
+import '../../widgets/enhanced_card.dart';
+import '../../widgets/gradient_button.dart';
 
 class SelectClothesScreen extends StatefulWidget {
   final List<ClothingItem> initiallySelected;

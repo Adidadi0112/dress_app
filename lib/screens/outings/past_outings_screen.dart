@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dress_app/models/outing.dart';
-import 'package:dress_app/blocs/outings/outings_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:dress_app/theme/tokens.dart';
-import 'package:dress_app/widgets/enhanced_card.dart';
+import '../../blocs/outings/outings_bloc.dart';
+import '../../blocs/outings/outings_state.dart';
+import '../../models/outing.dart';
+import '../../widgets/enhanced_card.dart';
 
 class PastOutingsScreen extends StatelessWidget {
   const PastOutingsScreen({super.key});

@@ -1,14 +1,14 @@
-import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dress_app/models/outing.dart';
-import 'package:dress_app/models/friend.dart';
-import 'package:dress_app/blocs/outings/outings_bloc.dart';
-import 'package:dress_app/blocs/friends/friends_bloc.dart';
-import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:dress_app/theme/tokens.dart';
-import 'package:dress_app/widgets/enhanced_card.dart';
+import '../../blocs/outings/outings_bloc.dart';
+import '../../blocs/outings/outings_state.dart';
+import '../../blocs/outings/outings_event.dart';
+import '../../blocs/friends/friends_bloc.dart';
+import '../../blocs/friends/friends_event.dart';
+import '../../models/outing.dart';
+import '../../widgets/enhanced_card.dart';
+import '../../widgets/gradient_button.dart';
 
 class FutureOutingsScreen extends StatelessWidget {
   const FutureOutingsScreen({super.key});

@@ -99,19 +99,19 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     const SizedBox(height: SpacingTokens.space16),
                     ModernTextField(
                       controller: _nameController,
-                      label: 'Item Name',
+                      hintText: 'Item Name',
                       prefixIcon: Icons.label,
                     ),
                     const SizedBox(height: SpacingTokens.space16),
                     ModernTextField(
                       controller: _categoryController,
-                      label: 'Category',
+                      hintText: 'Category',
                       prefixIcon: Icons.category,
                     ),
                     const SizedBox(height: SpacingTokens.space16),
                     ModernTextField(
                       controller: _descriptionController,
-                      label: 'Description',
+                      hintText: 'Description',
                       prefixIcon: Icons.description,
                       maxLines: 3,
                     ),
