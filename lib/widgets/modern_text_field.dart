@@ -41,7 +41,7 @@ class ModernTextField extends StatefulWidget {
     this.minLines,
     this.enabled = true,
     this.focusNode,
-    this.textInputAction,
+    this.textInputAction, required String label, required String? Function(dynamic value) validator,
   }) : super(key: key);
 
   @override

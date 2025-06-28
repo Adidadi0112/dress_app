@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/outings/outings_bloc.dart';
-import '../../blocs/outings/outings_event.dart';
+import '../../blocs/outings/outings_event.dart' hide AddOuting;
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_event.dart';
 import '../../blocs/friends/friends_state.dart';

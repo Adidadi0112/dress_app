@@ -24,96 +24,110 @@ class AccountScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(SpacingTokens.space16),
-        child: Column(
-          children: [
-            // Profile Header
-            EnhancedCard(
-              child: Padding(
-                padding: const EdgeInsets.all(SpacingTokens.space20),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(SpacingTokens.space12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        shape: BoxShape.circle,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(SpacingTokens.space16),
+          child: Column(
+            children: [
+              // Profile Header
+              EnhancedCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(SpacingTokens.space20),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(SpacingTokens.space12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 32,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.person,
-                        size: 32,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      const SizedBox(width: SpacingTokens.space16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Marta Wilgosz',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            Text(
+                              'Fashion Enthusiast',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: SpacingTokens.space16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Marta Wilgosz',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          Text(
-                            'Fashion Enthusiast',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: SpacingTokens.space24),
+              const SizedBox(height: SpacingTokens.space24),
 
-            // Menu Items
-            _buildMenuCard(
-              context,
-              icon: Icons.checkroom,
-              title: 'My Wardrobe',
-              subtitle: 'Manage your clothing collection',
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const WardrobeScreen()),
-                );
-              },
-            ),
+              // Menu Items
+              _buildMenuCard(
+                context,
+                icon: Icons.checkroom,
+                title: 'My Wardrobe',
+                subtitle: 'Manage your clothing collection',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const WardrobeScreen()),
+                  );
+                },
+              ),
 
-            const SizedBox(height: SpacingTokens.space12),
+              const SizedBox(height: SpacingTokens.space12),
 
-            _buildMenuCard(
-              context,
-              icon: Icons.event,
-              title: 'My Outings',
-              subtitle: 'Plan and track your events',
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const OutingsScreen()),
-                );
-              },
-            ),
+              _buildMenuCard(
+                context,
+                icon: Icons.event,
+                title: 'My Outings',
+                subtitle: 'Plan and track your events',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const OutingsScreen()),
+                  );
+                },
+              ),
 
-            const SizedBox(height: SpacingTokens.space12),
+              const SizedBox(height: SpacingTokens.space12),
 
-            _buildMenuCard(
-              context,
-              icon: Icons.people,
-              title: 'My Friends',
-              subtitle: 'Connect with other fashion lovers',
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const FriendsScreen()),
-                );
-              },
-            ),
-          ],
+              _buildMenuCard(
+                context,
+                icon: Icons.people,
+                title: 'My Friends',
+                subtitle: 'Connect with other fashion lovers',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const FriendsScreen()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBarMobileWidget(),
@@ -161,7 +175,8 @@ class AccountScreen extends StatelessWidget {
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                     ),
                   ],

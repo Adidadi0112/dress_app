@@ -1,7 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/models/outing.dart';
-import 'outings_event.dart';
-import 'outings_state.dart';
+
 // Events
 abstract class OutingsEvent extends Equatable {
   const OutingsEvent();
@@ -52,13 +52,12 @@ class OutingsInitial extends OutingsState {}
 class OutingsLoading extends OutingsState {}
 
 class OutingsLoaded extends OutingsState {
-  final List<Outing> pastOutings;
-  final List<Outing> futureOutings;
+  final List<Outing> outings;
 
-  const OutingsLoaded({required this.pastOutings, required this.futureOutings});
+  const OutingsLoaded({required this.outings});
 
   @override
-  List<Object?> get props => [pastOutings, futureOutings];
+  List<Object?> get props => [outings];
 }
 
 class OutingsError extends OutingsState {
@@ -85,7 +84,7 @@ class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
     emit(OutingsLoading());
     try {
       // In a real app, this would fetch from a database or API
-      emit(OutingsLoaded(_outings));
+      emit(OutingsLoaded(outings: List.from(_outings)));
     } catch (e) {
       emit(OutingsError(e.toString()));
     }
@@ -94,7 +93,7 @@ class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
   void _onAddOuting(AddOuting event, Emitter<OutingsState> emit) {
     try {
       _outings.add(event.outing);
-      emit(OutingsLoaded(List.from(_outings)));
+      emit(OutingsLoaded(outings: List.from(_outings)));
     } catch (e) {
       emit(OutingsError(e.toString()));
     }
@@ -105,7 +104,7 @@ class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
       final index = _outings.indexWhere((o) => o.id == event.outing.id);
       if (index != -1) {
         _outings[index] = event.outing;
-        emit(OutingsLoaded(List.from(_outings)));
+        emit(OutingsLoaded(outings: List.from(_outings)));
       }
     } catch (e) {
       emit(OutingsError(e.toString()));
@@ -114,8 +113,8 @@ class OutingsBloc extends Bloc<OutingsEvent, OutingsState> {
 
   void _onDeleteOuting(DeleteOuting event, Emitter<OutingsState> emit) {
     try {
-      _outings.removeWhere((o) => o.id == event.id);
-      emit(OutingsLoaded(List.from(_outings)));
+      _outings.removeWhere((o) => o.id == event.outingId);
+      emit(OutingsLoaded(outings: List.from(_outings)));
     } catch (e) {
       emit(OutingsError(e.toString()));
     }

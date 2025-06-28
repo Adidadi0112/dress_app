@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +49,7 @@ ThemeData lightMode = ThemeData(
     centerTitle: true,
     scrolledUnderElevation: 4,
     shadowColor: Colors.black.withOpacity(0.1),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: ColorTokens.lightText,
       size: 24,
     ),
@@ -63,18 +62,18 @@ ThemeData lightMode = ThemeData(
   ),
 
   // Enhanced Card Theme
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: ColorTokens.lightSurface,
     elevation: 0,
     shadowColor: Colors.black.withOpacity(0.08),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
-      side: BorderSide(
+      side: const BorderSide(
         color: ColorTokens.lightBorderVariant,
         width: 1.0,
       ),
     ),
-    margin: EdgeInsets.all(SpacingTokens.space8),
+    margin: const EdgeInsets.all(SpacingTokens.space8),
     clipBehavior: Clip.antiAlias,
   ),
 
@@ -85,7 +84,7 @@ ThemeData lightMode = ThemeData(
       foregroundColor: Colors.white,
       elevation: 0,
       shadowColor: ColorTokens.lightPrimary.withOpacity(0.3),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
       ),
@@ -109,8 +108,8 @@ ThemeData lightMode = ThemeData(
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: ColorTokens.lightPrimary,
-      side: BorderSide(color: ColorTokens.lightPrimary, width: 1.5),
-      padding: EdgeInsets.symmetric(
+      side: const BorderSide(color: ColorTokens.lightPrimary, width: 1.5),
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
       ),
@@ -128,7 +127,7 @@ ThemeData lightMode = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: ColorTokens.lightPrimary,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space16,
         vertical: SpacingTokens.space12,
       ),
@@ -147,29 +146,29 @@ ThemeData lightMode = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: ColorTokens.lightSurface,
-    contentPadding: EdgeInsets.symmetric(
+    contentPadding: const EdgeInsets.symmetric(
       horizontal: SpacingTokens.space16,
       vertical: SpacingTokens.space16,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.lightBorder, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.lightBorder, width: 1.0),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.lightBorder, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.lightBorder, width: 1.0),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.lightPrimary, width: 2.0),
+      borderSide: const BorderSide(color: ColorTokens.lightPrimary, width: 2.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.error, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.error, width: 1.0),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.error, width: 2.0),
+      borderSide: const BorderSide(color: ColorTokens.error, width: 2.0),
     ),
     labelStyle: GoogleFonts.inter(
       color: ColorTokens.lightTextSecondary,
@@ -188,19 +187,19 @@ ThemeData lightMode = ThemeData(
   ),
 
   // Enhanced Icon Theme
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: ColorTokens.lightText,
     size: 24,
   ),
 
   // Enhanced Tab Bar Theme
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: ColorTokens.lightPrimary,
     unselectedLabelColor: ColorTokens.lightTextSecondary,
     indicatorColor: ColorTokens.lightPrimary,
     indicatorSize: TabBarIndicatorSize.label,
     indicator: UnderlineTabIndicator(
-      borderSide: BorderSide(color: ColorTokens.lightPrimary, width: 3),
+      borderSide: const BorderSide(color: ColorTokens.lightPrimary, width: 3),
       borderRadius: BorderRadius.circular(RadiusTokens.radiusSm),
     ),
     labelStyle: GoogleFonts.inter(
@@ -351,7 +350,7 @@ ThemeData lightMode = ThemeData(
   ),
 
   // Enhanced Divider Theme
-  dividerTheme: DividerThemeData(
+  dividerTheme: const DividerThemeData(
     color: ColorTokens.lightBorderVariant,
     thickness: 1,
     space: SpacingTokens.space16,
@@ -362,7 +361,7 @@ ThemeData lightMode = ThemeData(
     backgroundColor: ColorTokens.lightSurfaceSecondary,
     selectedColor: ColorTokens.lightPrimary.withOpacity(0.12),
     secondarySelectedColor: ColorTokens.lightSecondary.withOpacity(0.12),
-    padding: EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
+    padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
     labelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.medium,

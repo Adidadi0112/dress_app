@@ -1,9 +1,12 @@
+import 'package:dress_app/models/friend.dart';
+import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/outings/outings_bloc.dart';
-import '../../blocs/outings/outings_state.dart';
-import '../../blocs/outings/outings_event.dart';
+import '../../blocs/outings/outings_state.dart'
+    hide OutingsState, OutingsLoading, OutingsError, OutingsLoaded;
+import '../../blocs/outings/outings_event.dart' hide UpdateOuting, DeleteOuting;
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_event.dart';
 import '../../models/outing.dart';
@@ -159,7 +162,8 @@ class FutureOutingsScreen extends StatelessWidget {
         }
 
         if (state is OutingsLoaded) {
-          final outings = state.futureOutings;
+          final outings =
+              (state as OutingsLoaded).outings.where((o) => !o.isPast).toList();
 
           if (outings.isEmpty) {
             return const Center(child: Text('No planned outings'));

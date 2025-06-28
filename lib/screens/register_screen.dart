@@ -77,7 +77,10 @@ class RegisterScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(SpacingTokens.space20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.1),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: SvgPicture.asset(
@@ -119,7 +122,13 @@ class RegisterScreen extends StatelessWidget {
                         ModernTextField(
                           controller: nameController,
                           label: 'Full Name',
-                          prefixIcon: Icons.person_outline,
+                          prefixIcon: const Icon(Icons.person_outline),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your full name';
+                            }
+                            return null;
+                          },
                         ),
 
                         const SizedBox(height: SpacingTokens.space16),
@@ -127,8 +136,17 @@ class RegisterScreen extends StatelessWidget {
                         ModernTextField(
                           controller: emailController,
                           label: 'Email',
-                          prefixIcon: Icons.email_outlined,
+                          prefixIcon: Icon(Icons.email_outlined),
                           keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
                         ),
 
                         const SizedBox(height: SpacingTokens.space16),
@@ -136,8 +154,14 @@ class RegisterScreen extends StatelessWidget {
                         ModernTextField(
                           controller: passwordController,
                           label: 'Password',
-                          prefixIcon: Icons.lock_outline,
+                          prefixIcon: Icon(Icons.lock_outline),
                           obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
                         ),
 
                         const SizedBox(height: SpacingTokens.space16),
@@ -145,8 +169,17 @@ class RegisterScreen extends StatelessWidget {
                         ModernTextField(
                           controller: confirmPasswordController,
                           label: 'Confirm Password',
-                          prefixIcon: Icons.lock_outline,
+                          prefixIcon: Icon(Icons.lock_outline),
                           obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please confirm your password';
+                            }
+                            if (value != passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
                         ),
 
                         const SizedBox(height: SpacingTokens.space24),
@@ -171,7 +204,8 @@ class RegisterScreen extends StatelessWidget {
                     Text(
                       'Already have an account?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                     ),
                     TextButton(

@@ -93,7 +93,7 @@ ThemeData createCustomPastelTheme({
     ),
 
     // Card Theme
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: surfaceColor,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -201,7 +201,7 @@ ThemeData createCustomPastelTheme({
     ),
 
     // Tab Bar Theme
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       labelColor: textColor,
       unselectedLabelColor: textSecondaryColor,
       indicatorColor: adjustedPrimary,

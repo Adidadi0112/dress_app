@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/outings/outings_bloc.dart';
-import '../../blocs/outings/outings_state.dart';
+import '../../blocs/outings/outings_state.dart'
+    hide OutingsState, OutingsLoading, OutingsError, OutingsLoaded;
 import '../../models/outing.dart';
 import '../../widgets/enhanced_card.dart';
 
@@ -22,7 +23,8 @@ class PastOutingsScreen extends StatelessWidget {
         }
 
         if (state is OutingsLoaded) {
-          final outings = state.pastOutings;
+          final outings =
+              (state as OutingsLoaded).outings.where((o) => o.isPast).toList();
 
           if (outings.isEmpty) {
             return const Center(child: Text('No past outings'));

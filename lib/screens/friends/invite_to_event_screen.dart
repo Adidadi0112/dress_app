@@ -1,10 +1,12 @@
+import 'package:dress_app/theme/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/outings/outings_bloc.dart';
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_state.dart';
-import '../../blocs/outings/outings_state.dart';
+import '../../blocs/outings/outings_state.dart'
+    hide OutingsState, OutingsLoaded;
 import '../../models/outing.dart';
 import '../../models/friend.dart';
 import '../../widgets/enhanced_card.dart';
@@ -62,16 +64,21 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                     children: [
                       Text(
                         'Select Event',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(height: SpacingTokens.space16),
                       BlocBuilder<OutingsBloc, OutingsState>(
                         builder: (context, state) {
                           if (state is OutingsLoaded) {
+                            final outings = (state as OutingsLoaded)
+                                .outings
+                                .where((o) => !o.isPast)
+                                .toList();
                             return Column(
-                              children: state.futureOutings.map((outing) {
+                              children: outings.map((outing) {
                                 return RadioListTile<Outing>(
                                   value: outing,
                                   groupValue: _selectedOuting,
@@ -110,9 +117,10 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                     children: [
                       Text(
                         'Select Friends',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(height: SpacingTokens.space16),
                       Expanded(
@@ -129,7 +137,8 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                                 itemCount: state.friends.length,
                                 itemBuilder: (context, index) {
                                   final friend = state.friends[index];
-                                  final isSelected = _selectedFriends.contains(friend);
+                                  final isSelected =
+                                      _selectedFriends.contains(friend);
 
                                   return CheckboxListTile(
                                     value: isSelected,
@@ -145,7 +154,8 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                                     title: Text(friend.name),
                                     subtitle: Text(friend.email),
                                     secondary: CircleAvatar(
-                                      backgroundColor: Theme.of(context).colorScheme.primary,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
                                       child: Text(friend.name[0]),
                                     ),
                                   );
@@ -154,10 +164,12 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                             }
 
                             if (state is FriendsError) {
-                              return Center(child: Text('Error: ${state.message}'));
+                              return Center(
+                                  child: Text('Error: ${state.message}'));
                             }
 
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           },
                         ),
                       ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +49,7 @@ ThemeData darkMode = ThemeData(
     centerTitle: true,
     scrolledUnderElevation: 4,
     shadowColor: Colors.black.withOpacity(0.3),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: ColorTokens.darkText,
       size: 24,
     ),
@@ -63,18 +62,18 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Enhanced Card Theme
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: ColorTokens.darkSurface,
     elevation: 0,
     shadowColor: Colors.black.withOpacity(0.3),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
-      side: BorderSide(
+      side: const BorderSide(
         color: ColorTokens.darkBorderVariant,
         width: 1.0,
       ),
     ),
-    margin: EdgeInsets.all(SpacingTokens.space8),
+    margin: const EdgeInsets.all(SpacingTokens.space8),
     clipBehavior: Clip.antiAlias,
   ),
 
@@ -85,7 +84,7 @@ ThemeData darkMode = ThemeData(
       foregroundColor: ColorTokens.darkBackground,
       elevation: 0,
       shadowColor: ColorTokens.darkPrimary.withOpacity(0.3),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
       ),
@@ -109,8 +108,8 @@ ThemeData darkMode = ThemeData(
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: ColorTokens.darkPrimary,
-      side: BorderSide(color: ColorTokens.darkPrimary, width: 1.5),
-      padding: EdgeInsets.symmetric(
+      side: const BorderSide(color: ColorTokens.darkPrimary, width: 1.5),
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
       ),
@@ -128,7 +127,7 @@ ThemeData darkMode = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: ColorTokens.darkPrimary,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space16,
         vertical: SpacingTokens.space12,
       ),
@@ -147,29 +146,29 @@ ThemeData darkMode = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: ColorTokens.darkSurface,
-    contentPadding: EdgeInsets.symmetric(
+    contentPadding: const EdgeInsets.symmetric(
       horizontal: SpacingTokens.space16,
       vertical: SpacingTokens.space16,
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.darkBorder, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.darkBorder, width: 1.0),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.darkBorder, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.darkBorder, width: 1.0),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.darkPrimary, width: 2.0),
+      borderSide: const BorderSide(color: ColorTokens.darkPrimary, width: 2.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.error, width: 1.0),
+      borderSide: const BorderSide(color: ColorTokens.error, width: 1.0),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.error, width: 2.0),
+      borderSide: const BorderSide(color: ColorTokens.error, width: 2.0),
     ),
     labelStyle: GoogleFonts.inter(
       color: ColorTokens.darkTextSecondary,
@@ -188,19 +187,19 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Enhanced Icon Theme
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: ColorTokens.darkText,
     size: 24,
   ),
 
   // Enhanced Tab Bar Theme
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: TabBarThemeData(
     labelColor: ColorTokens.darkPrimary,
     unselectedLabelColor: ColorTokens.darkTextSecondary,
     indicatorColor: ColorTokens.darkPrimary,
     indicatorSize: TabBarIndicatorSize.label,
     indicator: UnderlineTabIndicator(
-      borderSide: BorderSide(color: ColorTokens.darkPrimary, width: 3),
+      borderSide: const BorderSide(color: ColorTokens.darkPrimary, width: 3),
       borderRadius: BorderRadius.circular(RadiusTokens.radiusSm),
     ),
     labelStyle: GoogleFonts.inter(
@@ -351,7 +350,7 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Enhanced Divider Theme
-  dividerTheme: DividerThemeData(
+  dividerTheme: const DividerThemeData(
     color: ColorTokens.darkBorderVariant,
     thickness: 1,
     space: SpacingTokens.space16,
@@ -362,7 +361,7 @@ ThemeData darkMode = ThemeData(
     backgroundColor: ColorTokens.darkSurfaceSecondary,
     selectedColor: ColorTokens.darkPrimary.withOpacity(0.2),
     secondarySelectedColor: ColorTokens.darkSecondary.withOpacity(0.2),
-    padding: EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
+    padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
     labelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.medium,

@@ -72,7 +72,10 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   void _onRemoveFriend(RemoveFriend event, Emitter<FriendsState> emit) {
     try {
       _friends.removeWhere((friend) => friend.id == event.friendId);
-      emit(FriendsLoaded(List.from(_friends), List.from(_pendingInvites)));
+      emit(FriendsLoaded(
+        friends: List.from(_friends),
+        pendingInvites: List.from(_pendingInvites),
+      ));
     } catch (e) {
       emit(FriendsError(e.toString()));
     }
@@ -184,7 +187,10 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
         email: event.email,
       );
       _pendingInvites.add(newInvite);
-      emit(FriendsLoaded(List.from(_friends), List.from(_pendingInvites)));
+      emit(FriendsLoaded(
+        friends: List.from(_friends),
+        pendingInvites: List.from(_pendingInvites),
+      ));
     } catch (e) {
       emit(FriendsError(e.toString()));
     }

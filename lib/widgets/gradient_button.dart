@@ -29,7 +29,7 @@ class GradientButton extends StatefulWidget {
     this.leadingIcon,
     this.trailingIcon,
     this.width,
-    this.height,
+    this.height, required IconData icon,
   }) : super(key: key);
 
   @override

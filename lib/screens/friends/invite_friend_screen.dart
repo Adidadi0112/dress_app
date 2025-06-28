@@ -33,8 +33,8 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
       final name = _nameController.text.trim();
 
       context.read<FriendsBloc>().add(
-        InviteFriend(email: email, name: name),
-      );
+            InviteFriend(email: email, name: name),
+          );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -78,15 +78,16 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                       children: [
                         Text(
                           'Send Invitation',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: SpacingTokens.space16),
                         ModernTextField(
                           controller: _nameController,
                           label: 'Friend\'s Name',
-                          prefixIcon: Icons.person,
+                          prefixIcon: Icon(Icons.person),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a name';
@@ -98,7 +99,7 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                         ModernTextField(
                           controller: _emailController,
                           label: 'Email Address',
-                          prefixIcon: Icons.email,
+                          prefixIcon: Icon(Icons.email),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {

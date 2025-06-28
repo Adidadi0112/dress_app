@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Friend {
   final String id;
   final String name;

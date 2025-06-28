@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dress_app/models/clothing_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/item/item_bloc.dart';
