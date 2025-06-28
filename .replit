@@ -5,3 +5,15 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "flutter run -d web-server --web-hostname=0.0.0.0 --web-port=5000"]
+
+[workflows]
+runButton = "Flutter Web"
+
+[[workflows.workflow]]
+name = "Flutter Web"
+author = 44374476
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "flutter run -d web-server --web-hostname=0.0.0.0 --web-port=5000"
