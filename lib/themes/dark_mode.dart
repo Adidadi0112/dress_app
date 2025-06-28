@@ -61,7 +61,7 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Card Theme
-  cardTheme: CardThemeData(
+  cardTheme: const CardTheme(
     color: ColorTokens.darkSurface,
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -170,7 +170,7 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Tab Bar Theme
-  tabBarTheme: TabBarThemeData(
+  tabBarTheme: const TabBarTheme(
     labelColor: ColorTokens.darkText,
     unselectedLabelColor: ColorTokens.darkTextSecondary,
     indicatorColor: ColorTokens.darkPrimary,

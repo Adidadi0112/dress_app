@@ -23,7 +23,7 @@ class BottomAppBarMobileWidgetState extends State<BottomAppBarMobileWidget> {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [Colors.black.withValues(alpha: 0.5), Colors.transparent],
+          colors: [Colors.black.withOpacity(0.5), Colors.transparent],
         ),
       ),
       padding: const EdgeInsets.only(bottom: 30.0),
@@ -32,7 +32,7 @@ class BottomAppBarMobileWidgetState extends State<BottomAppBarMobileWidget> {
         children: [
           Container(
             decoration: ShapeDecoration(
-              color: const Color(0x7FDDDDDD).withValues(alpha: 0.3),
+              color: const Color(0x7FDDDDDD).withOpacity(0.3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(23.81),
               ),
