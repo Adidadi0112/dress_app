@@ -65,7 +65,7 @@ ThemeData darkMode = ThemeData(
     color: ColorTokens.darkSurface,
     elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
+      borderRadius: BorderRadius.all(Radius.circular(RadiusTokens.radiusXl)),
       side: BorderSide(
         color: ColorTokens.darkBorder,
         width: 1.0,
@@ -170,7 +170,7 @@ ThemeData darkMode = ThemeData(
   ),
 
   // Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarTheme(
     labelColor: ColorTokens.darkText,
     unselectedLabelColor: ColorTokens.darkTextSecondary,
     indicatorColor: ColorTokens.darkPrimary,

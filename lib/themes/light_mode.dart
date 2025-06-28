@@ -65,7 +65,7 @@ ThemeData lightMode = ThemeData(
     color: ColorTokens.lightSurface,
     elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
+      borderRadius: BorderRadius.all(Radius.circular(RadiusTokens.radiusXl)),
       side: BorderSide(
         color: ColorTokens.lightBorder,
         width: 1.0,
@@ -169,7 +169,7 @@ ThemeData lightMode = ThemeData(
   ),
 
   // Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: TabBarTheme(
     labelColor: ColorTokens.midInk,
     unselectedLabelColor: ColorTokens.lightTextSecondary,
     indicatorColor: ColorTokens.lightPrimary,

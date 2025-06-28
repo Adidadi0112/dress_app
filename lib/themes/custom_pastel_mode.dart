@@ -93,7 +93,7 @@ ThemeData createCustomPastelTheme({
     ),
 
     // Card Theme
-    cardTheme: const CardTheme(
+    cardTheme: CardTheme(
       color: surfaceColor,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -103,7 +103,7 @@ ThemeData createCustomPastelTheme({
           width: 1.0,
         ),
       ),
-      margin: EdgeInsets.all(SpacingTokens.space8),
+      margin: const EdgeInsets.all(SpacingTokens.space8),
       clipBehavior: Clip.antiAlias,
     ),
 
@@ -201,7 +201,7 @@ ThemeData createCustomPastelTheme({
     ),
 
     // Tab Bar Theme
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: TabBarTheme(
       labelColor: textColor,
       unselectedLabelColor: textSecondaryColor,
       indicatorColor: adjustedPrimary,
