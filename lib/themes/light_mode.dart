@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,67 +8,69 @@ ThemeData lightMode = ThemeData(
   fontFamily: GoogleFonts.inter().fontFamily,
   brightness: Brightness.light,
 
-  // Color Scheme
+  // Enhanced Color Scheme
   colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: ColorTokens.lightPrimary,
-    onPrimary: ColorTokens.midInk,
-    primaryContainer: ColorTokens.rosePetal.withOpacity(0.7),
-    onPrimaryContainer: ColorTokens.midInk,
+    onPrimary: Colors.white,
+    primaryContainer: ColorTokens.lightPrimaryVariant,
+    onPrimaryContainer: ColorTokens.lightText,
     secondary: ColorTokens.lightSecondary,
-    onSecondary: ColorTokens.midInk,
-    secondaryContainer: ColorTokens.lavenderMist.withOpacity(0.7),
-    onSecondaryContainer: ColorTokens.midInk,
+    onSecondary: Colors.white,
+    secondaryContainer: ColorTokens.lightSecondaryVariant,
+    onSecondaryContainer: ColorTokens.lightText,
     tertiary: ColorTokens.lightAccent,
-    onTertiary: ColorTokens.midInk,
-    tertiaryContainer: ColorTokens.mintFoam.withOpacity(0.7),
-    onTertiaryContainer: ColorTokens.midInk,
+    onTertiary: Colors.white,
+    tertiaryContainer: ColorTokens.lightAccentVariant,
+    onTertiaryContainer: ColorTokens.lightText,
     error: ColorTokens.error,
-    onError: ColorTokens.midInk,
-    errorContainer: ColorTokens.error.withOpacity(0.7),
-    onErrorContainer: ColorTokens.midInk,
+    onError: Colors.white,
+    errorContainer: ColorTokens.errorLight,
+    onErrorContainer: ColorTokens.errorDark,
     background: ColorTokens.lightBackground,
     onBackground: ColorTokens.lightText,
     surface: ColorTokens.lightSurface,
     onSurface: ColorTokens.lightText,
-    surfaceVariant: ColorTokens.lightSurface.withOpacity(0.7),
+    surfaceVariant: ColorTokens.lightSurfaceSecondary,
     onSurfaceVariant: ColorTokens.lightTextSecondary,
     outline: ColorTokens.lightBorder,
-    outlineVariant: ColorTokens.lightBorder.withOpacity(0.5),
-    shadow: Colors.black.withOpacity(0.1),
+    outlineVariant: ColorTokens.lightBorderVariant,
+    shadow: Colors.black.withOpacity(0.08),
     scrim: Colors.black.withOpacity(0.3),
     inverseSurface: ColorTokens.darkSurface,
     onInverseSurface: ColorTokens.darkText,
     inversePrimary: ColorTokens.darkPrimary,
   ),
 
-  // AppBar Theme
+  // Enhanced AppBar Theme
   appBarTheme: AppBarTheme(
     backgroundColor: ColorTokens.lightBackground,
-    foregroundColor: ColorTokens.midInk,
+    foregroundColor: ColorTokens.lightText,
     elevation: 0,
     centerTitle: true,
+    scrolledUnderElevation: 4,
+    shadowColor: Colors.black.withOpacity(0.1),
     iconTheme: IconThemeData(
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       size: 24,
-      weight: 1.0, // 1px hairline stroke
     ),
     titleTextStyle: GoogleFonts.playfairDisplay(
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       fontSize: TypographyTokens.fontXl,
       fontWeight: TypographyTokens.bold,
       letterSpacing: TypographyTokens.letterSpacingTight,
     ),
   ),
 
-  // Card Theme
-  cardTheme: const CardTheme(
+  // Enhanced Card Theme
+  cardTheme: CardTheme(
     color: ColorTokens.lightSurface,
     elevation: 0,
+    shadowColor: Colors.black.withOpacity(0.08),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(RadiusTokens.radiusXl)),
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
       side: BorderSide(
-        color: ColorTokens.lightBorder,
+        color: ColorTokens.lightBorderVariant,
         width: 1.0,
       ),
     ),
@@ -75,12 +78,13 @@ ThemeData lightMode = ThemeData(
     clipBehavior: Clip.antiAlias,
   ),
 
-  // Button Themes
+  // Enhanced Button Themes
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: ColorTokens.lightPrimary,
-      foregroundColor: ColorTokens.midInk,
+      foregroundColor: Colors.white,
       elevation: 0,
+      shadowColor: ColorTokens.lightPrimary.withOpacity(0.3),
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
@@ -90,16 +94,22 @@ ThemeData lightMode = ThemeData(
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
+    ).copyWith(
+      elevation: MaterialStateProperty.resolveWith<double>((states) {
+        if (states.contains(MaterialState.pressed)) return 2;
+        if (states.contains(MaterialState.hovered)) return 4;
+        return 0;
+      }),
     ),
   ),
 
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      foregroundColor: ColorTokens.midInk,
-      side: BorderSide(color: ColorTokens.lightBorder, width: 1.0),
+      foregroundColor: ColorTokens.lightPrimary,
+      side: BorderSide(color: ColorTokens.lightPrimary, width: 1.5),
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
@@ -109,7 +119,7 @@ ThemeData lightMode = ThemeData(
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
     ),
@@ -117,24 +127,30 @@ ThemeData lightMode = ThemeData(
 
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      foregroundColor: ColorTokens.midInk,
+      foregroundColor: ColorTokens.lightPrimary,
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space16,
-        vertical: SpacingTokens.space8,
+        vertical: SpacingTokens.space12,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(RadiusTokens.radiusMd),
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
     ),
   ),
 
-  // Input Decoration Theme
+  // Enhanced Input Decoration Theme
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: ColorTokens.lightSurface,
-    contentPadding: EdgeInsets.all(SpacingTokens.space16),
+    contentPadding: EdgeInsets.symmetric(
+      horizontal: SpacingTokens.space16,
+      vertical: SpacingTokens.space16,
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
       borderSide: BorderSide(color: ColorTokens.lightBorder, width: 1.0),
@@ -145,177 +161,219 @@ ThemeData lightMode = ThemeData(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.lightPrimary, width: 1.5),
+      borderSide: BorderSide(color: ColorTokens.lightPrimary, width: 2.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
       borderSide: BorderSide(color: ColorTokens.error, width: 1.0),
     ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+      borderSide: BorderSide(color: ColorTokens.error, width: 2.0),
+    ),
     labelStyle: GoogleFonts.inter(
       color: ColorTokens.lightTextSecondary,
       fontSize: TypographyTokens.fontMd,
+      fontWeight: TypographyTokens.medium,
     ),
     hintStyle: GoogleFonts.inter(
-      color: ColorTokens.lightTextSecondary.withOpacity(0.7),
+      color: ColorTokens.lightTextTertiary,
       fontSize: TypographyTokens.fontMd,
+    ),
+    floatingLabelStyle: GoogleFonts.inter(
+      color: ColorTokens.lightPrimary,
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
     ),
   ),
 
-  // Icon Theme
+  // Enhanced Icon Theme
   iconTheme: IconThemeData(
-    color: ColorTokens.midInk,
+    color: ColorTokens.lightText,
     size: 24,
-    weight: 1.0, // 1px hairline stroke
   ),
 
-  // Tab Bar Theme
+  // Enhanced Tab Bar Theme
   tabBarTheme: TabBarTheme(
-    labelColor: ColorTokens.midInk,
+    labelColor: ColorTokens.lightPrimary,
     unselectedLabelColor: ColorTokens.lightTextSecondary,
     indicatorColor: ColorTokens.lightPrimary,
     indicatorSize: TabBarIndicatorSize.label,
+    indicator: UnderlineTabIndicator(
+      borderSide: BorderSide(color: ColorTokens.lightPrimary, width: 3),
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusSm),
+    ),
     labelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.medium,
+      fontWeight: TypographyTokens.semiBold,
     ),
     unselectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.regular,
+      fontWeight: TypographyTokens.medium,
     ),
   ),
 
-  // Floating Action Button Theme
+  // Enhanced Floating Action Button Theme
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: ColorTokens.lightPrimary,
-    foregroundColor: ColorTokens.midInk,
-    elevation: 2,
+    foregroundColor: Colors.white,
+    elevation: 6,
+    highlightElevation: 12,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusCircular),
     ),
   ),
 
-  // Bottom Navigation Bar Theme
+  // Enhanced Bottom Navigation Bar Theme
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: ColorTokens.lightBackground,
-    selectedItemColor: ColorTokens.midInk,
+    backgroundColor: ColorTokens.lightSurface,
+    selectedItemColor: ColorTokens.lightPrimary,
     unselectedItemColor: ColorTokens.lightTextSecondary,
     selectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
-      fontWeight: TypographyTokens.medium,
+      fontWeight: TypographyTokens.semiBold,
     ),
     unselectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
-      fontWeight: TypographyTokens.regular,
+      fontWeight: TypographyTokens.medium,
     ),
-    elevation: 0,
+    elevation: 8,
+    type: BottomNavigationBarType.fixed,
   ),
 
-  // Text Theme
+  // Enhanced Text Theme
   textTheme: TextTheme(
     displayLarge: GoogleFonts.playfairDisplay(
       fontSize: TypographyTokens.font4xl,
       fontWeight: TypographyTokens.bold,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingTight,
       height: TypographyTokens.lineHeightTight,
     ),
     displayMedium: GoogleFonts.playfairDisplay(
       fontSize: TypographyTokens.font3xl,
       fontWeight: TypographyTokens.bold,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingTight,
       height: TypographyTokens.lineHeightTight,
     ),
     displaySmall: GoogleFonts.playfairDisplay(
       fontSize: TypographyTokens.font2xl,
-      fontWeight: TypographyTokens.regular,
-      color: ColorTokens.midInk,
+      fontWeight: TypographyTokens.semiBold,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.font2xl,
-      fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
-      letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      fontWeight: TypographyTokens.bold,
+      color: ColorTokens.lightText,
+      letterSpacing: TypographyTokens.letterSpacingTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXl,
-      fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
+      fontWeight: TypographyTokens.bold,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
       fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
       fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
       fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.semiBold,
-      color: ColorTokens.midInk,
-      letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      color: ColorTokens.lightText,
+      letterSpacing: TypographyTokens.letterSpacingWide,
+      height: TypographyTokens.lineHeightSnug,
     ),
     bodyLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
       fontWeight: TypographyTokens.regular,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
       height: TypographyTokens.lineHeightNormal,
     ),
     bodyMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
       fontWeight: TypographyTokens.regular,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
       height: TypographyTokens.lineHeightNormal,
     ),
     bodySmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.regular,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightTextSecondary,
       letterSpacing: TypographyTokens.letterSpacingNormal,
       height: TypographyTokens.lineHeightNormal,
     ),
     labelLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.medium,
-      color: ColorTokens.midInk,
+      fontWeight: TypographyTokens.semiBold,
+      color: ColorTokens.lightText,
       letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     labelMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.medium,
-      color: ColorTokens.midInk,
+      color: ColorTokens.lightTextSecondary,
       letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     labelSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
       fontWeight: TypographyTokens.medium,
-      color: ColorTokens.midInk,
-      letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+      color: ColorTokens.lightTextTertiary,
+      letterSpacing: TypographyTokens.letterSpacingWider,
+      height: TypographyTokens.lineHeightSnug,
+    ),
+  ),
+
+  // Enhanced Divider Theme
+  dividerTheme: DividerThemeData(
+    color: ColorTokens.lightBorderVariant,
+    thickness: 1,
+    space: SpacingTokens.space16,
+  ),
+
+  // Enhanced Chip Theme
+  chipTheme: ChipThemeData(
+    backgroundColor: ColorTokens.lightSurfaceSecondary,
+    selectedColor: ColorTokens.lightPrimary.withOpacity(0.12),
+    secondarySelectedColor: ColorTokens.lightSecondary.withOpacity(0.12),
+    padding: EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
+    labelStyle: GoogleFonts.inter(
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
+    ),
+    secondaryLabelStyle: GoogleFonts.inter(
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
+    ),
+    brightness: Brightness.light,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusCircular),
     ),
   ),
 );

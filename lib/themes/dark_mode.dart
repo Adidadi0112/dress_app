@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,50 +8,51 @@ ThemeData darkMode = ThemeData(
   fontFamily: GoogleFonts.inter().fontFamily,
   brightness: Brightness.dark,
 
-  // Color Scheme
+  // Enhanced Color Scheme
   colorScheme: ColorScheme(
     brightness: Brightness.dark,
     primary: ColorTokens.darkPrimary,
-    onPrimary: ColorTokens.darkText,
-    primaryContainer: ColorTokens.darkPrimary.withOpacity(0.7),
+    onPrimary: ColorTokens.darkBackground,
+    primaryContainer: ColorTokens.darkPrimaryVariant,
     onPrimaryContainer: ColorTokens.darkText,
     secondary: ColorTokens.darkSecondary,
-    onSecondary: ColorTokens.darkText,
-    secondaryContainer: ColorTokens.darkSecondary.withOpacity(0.7),
+    onSecondary: ColorTokens.darkBackground,
+    secondaryContainer: ColorTokens.darkSecondaryVariant,
     onSecondaryContainer: ColorTokens.darkText,
     tertiary: ColorTokens.darkAccent,
-    onTertiary: ColorTokens.darkText,
-    tertiaryContainer: ColorTokens.darkAccent.withOpacity(0.7),
+    onTertiary: ColorTokens.darkBackground,
+    tertiaryContainer: ColorTokens.darkAccentVariant,
     onTertiaryContainer: ColorTokens.darkText,
-    error: ColorTokens.error.withOpacity(0.8),
-    onError: ColorTokens.midInk,
-    errorContainer: ColorTokens.error.withOpacity(0.6),
-    onErrorContainer: ColorTokens.midInk,
+    error: ColorTokens.error,
+    onError: Colors.white,
+    errorContainer: ColorTokens.errorDark,
+    onErrorContainer: ColorTokens.errorLight,
     background: ColorTokens.darkBackground,
     onBackground: ColorTokens.darkText,
     surface: ColorTokens.darkSurface,
     onSurface: ColorTokens.darkText,
-    surfaceVariant: ColorTokens.darkSurface.withOpacity(0.7),
+    surfaceVariant: ColorTokens.darkSurfaceSecondary,
     onSurfaceVariant: ColorTokens.darkTextSecondary,
     outline: ColorTokens.darkBorder,
-    outlineVariant: ColorTokens.darkBorder.withOpacity(0.5),
-    shadow: Colors.black.withOpacity(0.3),
-    scrim: Colors.black.withOpacity(0.5),
+    outlineVariant: ColorTokens.darkBorderVariant,
+    shadow: Colors.black.withOpacity(0.4),
+    scrim: Colors.black.withOpacity(0.6),
     inverseSurface: ColorTokens.lightSurface,
     onInverseSurface: ColorTokens.lightText,
     inversePrimary: ColorTokens.lightPrimary,
   ),
 
-  // AppBar Theme
+  // Enhanced AppBar Theme
   appBarTheme: AppBarTheme(
     backgroundColor: ColorTokens.darkBackground,
     foregroundColor: ColorTokens.darkText,
     elevation: 0,
     centerTitle: true,
+    scrolledUnderElevation: 4,
+    shadowColor: Colors.black.withOpacity(0.3),
     iconTheme: IconThemeData(
       color: ColorTokens.darkText,
       size: 24,
-      weight: 1.0, // 1px hairline stroke
     ),
     titleTextStyle: GoogleFonts.playfairDisplay(
       color: ColorTokens.darkText,
@@ -60,14 +62,15 @@ ThemeData darkMode = ThemeData(
     ),
   ),
 
-  // Card Theme
-  cardTheme: const CardTheme(
+  // Enhanced Card Theme
+  cardTheme: CardTheme(
     color: ColorTokens.darkSurface,
     elevation: 0,
+    shadowColor: Colors.black.withOpacity(0.3),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(RadiusTokens.radiusXl)),
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusXl),
       side: BorderSide(
-        color: ColorTokens.darkBorder,
+        color: ColorTokens.darkBorderVariant,
         width: 1.0,
       ),
     ),
@@ -75,12 +78,13 @@ ThemeData darkMode = ThemeData(
     clipBehavior: Clip.antiAlias,
   ),
 
-  // Button Themes
+  // Enhanced Button Themes
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: ColorTokens.darkPrimary,
-      foregroundColor: ColorTokens.darkText,
+      foregroundColor: ColorTokens.darkBackground,
       elevation: 0,
+      shadowColor: ColorTokens.darkPrimary.withOpacity(0.3),
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
@@ -90,16 +94,22 @@ ThemeData darkMode = ThemeData(
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
+    ).copyWith(
+      elevation: MaterialStateProperty.resolveWith<double>((states) {
+        if (states.contains(MaterialState.pressed)) return 2;
+        if (states.contains(MaterialState.hovered)) return 6;
+        return 0;
+      }),
     ),
   ),
 
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      foregroundColor: ColorTokens.darkText,
-      side: BorderSide(color: ColorTokens.darkBorder, width: 1.0),
+      foregroundColor: ColorTokens.darkPrimary,
+      side: BorderSide(color: ColorTokens.darkPrimary, width: 1.5),
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space24,
         vertical: SpacingTokens.space16,
@@ -109,7 +119,7 @@ ThemeData darkMode = ThemeData(
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
     ),
@@ -117,24 +127,30 @@ ThemeData darkMode = ThemeData(
 
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      foregroundColor: ColorTokens.darkText,
+      foregroundColor: ColorTokens.darkPrimary,
       padding: EdgeInsets.symmetric(
         horizontal: SpacingTokens.space16,
-        vertical: SpacingTokens.space8,
+        vertical: SpacingTokens.space12,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(RadiusTokens.radiusMd),
       ),
       textStyle: GoogleFonts.inter(
         fontSize: TypographyTokens.fontMd,
-        fontWeight: TypographyTokens.medium,
+        fontWeight: TypographyTokens.semiBold,
         letterSpacing: TypographyTokens.letterSpacingWide,
       ),
     ),
   ),
 
-  // Input Decoration Theme
+  // Enhanced Input Decoration Theme
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: ColorTokens.darkSurface,
-    contentPadding: EdgeInsets.all(SpacingTokens.space16),
+    contentPadding: EdgeInsets.symmetric(
+      horizontal: SpacingTokens.space16,
+      vertical: SpacingTokens.space16,
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
       borderSide: BorderSide(color: ColorTokens.darkBorder, width: 1.0),
@@ -145,73 +161,87 @@ ThemeData darkMode = ThemeData(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide: BorderSide(color: ColorTokens.darkPrimary, width: 1.5),
+      borderSide: BorderSide(color: ColorTokens.darkPrimary, width: 2.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
-      borderSide:
-          BorderSide(color: ColorTokens.error.withOpacity(0.8), width: 1.0),
+      borderSide: BorderSide(color: ColorTokens.error, width: 1.0),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+      borderSide: BorderSide(color: ColorTokens.error, width: 2.0),
     ),
     labelStyle: GoogleFonts.inter(
       color: ColorTokens.darkTextSecondary,
       fontSize: TypographyTokens.fontMd,
+      fontWeight: TypographyTokens.medium,
     ),
     hintStyle: GoogleFonts.inter(
-      color: ColorTokens.darkTextSecondary.withOpacity(0.7),
+      color: ColorTokens.darkTextTertiary,
       fontSize: TypographyTokens.fontMd,
+    ),
+    floatingLabelStyle: GoogleFonts.inter(
+      color: ColorTokens.darkPrimary,
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
     ),
   ),
 
-  // Icon Theme
+  // Enhanced Icon Theme
   iconTheme: IconThemeData(
     color: ColorTokens.darkText,
     size: 24,
-    weight: 1.0, // 1px hairline stroke
   ),
 
-  // Tab Bar Theme
+  // Enhanced Tab Bar Theme
   tabBarTheme: TabBarTheme(
-    labelColor: ColorTokens.darkText,
+    labelColor: ColorTokens.darkPrimary,
     unselectedLabelColor: ColorTokens.darkTextSecondary,
     indicatorColor: ColorTokens.darkPrimary,
     indicatorSize: TabBarIndicatorSize.label,
+    indicator: UnderlineTabIndicator(
+      borderSide: BorderSide(color: ColorTokens.darkPrimary, width: 3),
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusSm),
+    ),
     labelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.medium,
+      fontWeight: TypographyTokens.semiBold,
     ),
     unselectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.regular,
+      fontWeight: TypographyTokens.medium,
     ),
   ),
 
-  // Floating Action Button Theme
+  // Enhanced Floating Action Button Theme
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: ColorTokens.darkPrimary,
-    foregroundColor: ColorTokens.darkText,
-    elevation: 2,
+    foregroundColor: ColorTokens.darkBackground,
+    elevation: 8,
+    highlightElevation: 16,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(RadiusTokens.radiusCircular),
     ),
   ),
 
-  // Bottom Navigation Bar Theme
+  // Enhanced Bottom Navigation Bar Theme
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: ColorTokens.darkBackground,
-    selectedItemColor: ColorTokens.darkText,
+    backgroundColor: ColorTokens.darkSurface,
+    selectedItemColor: ColorTokens.darkPrimary,
     unselectedItemColor: ColorTokens.darkTextSecondary,
     selectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
-      fontWeight: TypographyTokens.medium,
+      fontWeight: TypographyTokens.semiBold,
     ),
     unselectedLabelStyle: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
-      fontWeight: TypographyTokens.regular,
+      fontWeight: TypographyTokens.medium,
     ),
-    elevation: 0,
+    elevation: 12,
+    type: BottomNavigationBarType.fixed,
   ),
 
-  // Text Theme
+  // Enhanced Text Theme
   textTheme: TextTheme(
     displayLarge: GoogleFonts.playfairDisplay(
       fontSize: TypographyTokens.font4xl,
@@ -229,52 +259,52 @@ ThemeData darkMode = ThemeData(
     ),
     displaySmall: GoogleFonts.playfairDisplay(
       fontSize: TypographyTokens.font2xl,
-      fontWeight: TypographyTokens.regular,
+      fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.font2xl,
-      fontWeight: TypographyTokens.semiBold,
+      fontWeight: TypographyTokens.bold,
       color: ColorTokens.darkText,
-      letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      letterSpacing: TypographyTokens.letterSpacingTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXl,
-      fontWeight: TypographyTokens.semiBold,
+      fontWeight: TypographyTokens.bold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     headlineSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
       fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
       fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
       fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     titleSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
-      letterSpacing: TypographyTokens.letterSpacingNormal,
-      height: TypographyTokens.lineHeightTight,
+      letterSpacing: TypographyTokens.letterSpacingWide,
+      height: TypographyTokens.lineHeightSnug,
     ),
     bodyLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontLg,
@@ -293,30 +323,59 @@ ThemeData darkMode = ThemeData(
     bodySmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.regular,
-      color: ColorTokens.darkText,
+      color: ColorTokens.darkTextSecondary,
       letterSpacing: TypographyTokens.letterSpacingNormal,
       height: TypographyTokens.lineHeightNormal,
     ),
     labelLarge: GoogleFonts.inter(
       fontSize: TypographyTokens.fontMd,
-      fontWeight: TypographyTokens.medium,
+      fontWeight: TypographyTokens.semiBold,
       color: ColorTokens.darkText,
       letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     labelMedium: GoogleFonts.inter(
       fontSize: TypographyTokens.fontSm,
       fontWeight: TypographyTokens.medium,
-      color: ColorTokens.darkText,
+      color: ColorTokens.darkTextSecondary,
       letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+      height: TypographyTokens.lineHeightSnug,
     ),
     labelSmall: GoogleFonts.inter(
       fontSize: TypographyTokens.fontXs,
       fontWeight: TypographyTokens.medium,
+      color: ColorTokens.darkTextTertiary,
+      letterSpacing: TypographyTokens.letterSpacingWider,
+      height: TypographyTokens.lineHeightSnug,
+    ),
+  ),
+
+  // Enhanced Divider Theme
+  dividerTheme: DividerThemeData(
+    color: ColorTokens.darkBorderVariant,
+    thickness: 1,
+    space: SpacingTokens.space16,
+  ),
+
+  // Enhanced Chip Theme
+  chipTheme: ChipThemeData(
+    backgroundColor: ColorTokens.darkSurfaceSecondary,
+    selectedColor: ColorTokens.darkPrimary.withOpacity(0.2),
+    secondarySelectedColor: ColorTokens.darkSecondary.withOpacity(0.2),
+    padding: EdgeInsets.symmetric(horizontal: SpacingTokens.space12),
+    labelStyle: GoogleFonts.inter(
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
       color: ColorTokens.darkText,
-      letterSpacing: TypographyTokens.letterSpacingWide,
-      height: TypographyTokens.lineHeightTight,
+    ),
+    secondaryLabelStyle: GoogleFonts.inter(
+      fontSize: TypographyTokens.fontSm,
+      fontWeight: TypographyTokens.medium,
+      color: ColorTokens.darkText,
+    ),
+    brightness: Brightness.dark,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(RadiusTokens.radiusCircular),
     ),
   ),
 );
