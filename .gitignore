@@ -43,3 +43,24 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase related
+# Note: firebase_options.dart should be committed as it contains public config
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+.firebase/
+**/firebase-debug.log
+**/firestore-debug.log
+**/ui-debug.log
+**/database-debug.log
+firebase-debug.*.log
+firestore-debug.*.log
+ui-debug.*.log
+database-debug.*.log
+.firebaserc
+
+# Firebase Functions (if you add them later)
+functions/node_modules/
+functions/.env
+functions/lib/
