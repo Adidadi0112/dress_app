@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:dress_app/theme/tokens.dart';
 
@@ -21,6 +20,8 @@ class ModernTextField extends StatefulWidget {
   final bool enabled;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  final String? label;
+  final String? Function(String?)? validator;
 
   const ModernTextField({
     Key? key,
@@ -41,7 +42,9 @@ class ModernTextField extends StatefulWidget {
     this.minLines,
     this.enabled = true,
     this.focusNode,
-    this.textInputAction, required String label, required String? Function(dynamic value) validator,
+    this.textInputAction,
+    this.label,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -108,7 +111,9 @@ class _ModernTextFieldState extends State<ModernTextField>
                 boxShadow: _isFocused
                     ? [
                         BoxShadow(
-                          color: (hasError ? ColorTokens.error : theme.primaryColor)
+                          color: (hasError
+                                  ? ColorTokens.error
+                                  : theme.primaryColor)
                               .withOpacity(0.15),
                           blurRadius: 8,
                           offset: Offset(0, 2),
@@ -119,6 +124,7 @@ class _ModernTextFieldState extends State<ModernTextField>
               child: TextFormField(
                 controller: widget.controller,
                 focusNode: _focusNode,
+                validator: widget.validator,
                 keyboardType: widget.keyboardType,
                 obscureText: widget.obscureText,
                 onChanged: widget.onChanged,
@@ -131,7 +137,7 @@ class _ModernTextFieldState extends State<ModernTextField>
                 textInputAction: widget.textInputAction,
                 style: theme.textTheme.bodyMedium,
                 decoration: InputDecoration(
-                  labelText: widget.labelText,
+                  labelText: widget.label ?? widget.labelText,
                   hintText: widget.hintText,
                   errorText: widget.errorText,
                   prefixIcon: widget.prefixIcon != null
@@ -149,7 +155,7 @@ class _ModernTextFieldState extends State<ModernTextField>
                       : (isDark
                           ? ColorTokens.darkSurfaceSecondary
                           : ColorTokens.lightSurfaceSecondary),
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: SpacingTokens.space16,
                     vertical: SpacingTokens.space16,
                   ),

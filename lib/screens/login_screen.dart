@@ -53,11 +53,11 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(SpacingTokens.space24),
+            padding: const EdgeInsets.all(SpacingTokens.space16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: SpacingTokens.space32),
+                const SizedBox(height: SpacingTokens.space24),
 
                 // logo
                 Container(
@@ -66,17 +66,17 @@ class LoginScreen extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: SvgPicture.asset(
                     'assets/images/logo.svg',
-                    height: 120,
-                    width: 120,
+                    height: 100,
+                    width: 100,
                   ),
                 ),
 
-                const SizedBox(height: SpacingTokens.space32),
+                const SizedBox(height: SpacingTokens.space24),
 
                 // welcome text
                 Text(
@@ -97,18 +97,18 @@ class LoginScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: SpacingTokens.space32),
+                const SizedBox(height: SpacingTokens.space24),
 
                 // login form
                 EnhancedCard(
                   child: Padding(
-                    padding: const EdgeInsets.all(SpacingTokens.space24),
+                    padding: const EdgeInsets.all(SpacingTokens.space8),
                     child: Column(
                       children: [
                         ModernTextField(
                           controller: usernameController,
                           label: 'Email',
-                          prefixIcon: Icon(Icons.email_outlined),
+                          prefixIcon: const Icon(Icons.email_outlined),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -126,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                         ModernTextField(
                           controller: passwordController,
                           label: 'Password',
-                          prefixIcon: Icon(Icons.lock_outline),
+                          prefixIcon: const Icon(Icons.lock_outline),
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -135,39 +135,23 @@ class LoginScreen extends StatelessWidget {
                             return null;
                           },
                         ),
-
-                        const SizedBox(height: SpacingTokens.space16),
-
-                        // forgot password?
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              // TODO: Implement forgot password
-                            },
-                            child: Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-                        ),
-
                         const SizedBox(height: SpacingTokens.space16),
 
                         // sign in button
-                        GradientButton(
-                          onPressed: () => login(context),
-                          text: 'Sign In',
-                          icon: Icons.login,
+                        SizedBox(
+                          width: double.infinity,
+                          child: GradientButton(
+                            onPressed: () => login(context),
+                            text: 'Sign In',
+                            icon: Icons.login,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: SpacingTokens.space24),
+                const SizedBox(height: SpacingTokens.space8),
 
                 // register link
                 Row(

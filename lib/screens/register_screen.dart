@@ -67,29 +67,10 @@ class RegisterScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(SpacingTokens.space24),
+            padding: const EdgeInsets.all(SpacingTokens.space16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: SpacingTokens.space16),
-
-                // logo
-                Container(
-                  padding: const EdgeInsets.all(SpacingTokens.space20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryContainer
-                        .withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/images/logo.svg',
-                    height: 80,
-                    width: 80,
-                  ),
-                ),
-
                 const SizedBox(height: SpacingTokens.space24),
 
                 // welcome text
@@ -111,12 +92,12 @@ class RegisterScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: SpacingTokens.space32),
+                const SizedBox(height: SpacingTokens.space16),
 
                 // register form
                 EnhancedCard(
                   child: Padding(
-                    padding: const EdgeInsets.all(SpacingTokens.space24),
+                    padding: const EdgeInsets.all(SpacingTokens.space8),
                     child: Column(
                       children: [
                         ModernTextField(
@@ -182,20 +163,23 @@ class RegisterScreen extends StatelessWidget {
                           },
                         ),
 
-                        const SizedBox(height: SpacingTokens.space24),
+                        const SizedBox(height: SpacingTokens.space16),
 
                         // register button
-                        GradientButton(
-                          onPressed: () => register(context),
-                          text: 'Create Account',
-                          icon: Icons.person_add,
+                        SizedBox(
+                          width: double.infinity,
+                          child: GradientButton(
+                            onPressed: () => register(context),
+                            text: 'Create Account',
+                            icon: Icons.person_add,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: SpacingTokens.space24),
+                const SizedBox(height: SpacingTokens.space16),
 
                 // login link
                 Row(
