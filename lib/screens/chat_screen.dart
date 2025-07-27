@@ -82,36 +82,29 @@ class ChatScreen extends StatelessWidget {
                         const SizedBox(width: SpacingTokens.space8),
                       ],
                       Flexible(
-                        child: EnhancedCard(
-                          child: Container(
-                            padding:
-                                const EdgeInsets.all(SpacingTokens.space12),
-                            decoration: BoxDecoration(
-                              color: msg.isMe
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                              borderRadius:
-                                  BorderRadius.circular(RadiusTokens.radiusLg),
-                            ),
-                            child: Text(
-                              msg.text,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: msg.isMe
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .onPrimaryContainer
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                  ),
-                            ),
+                        child: Container(
+                          padding: const EdgeInsets.all(SpacingTokens.space12),
+                          decoration: BoxDecoration(
+                            color: msg.isMe
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : Theme.of(context).colorScheme.surfaceVariant,
+                            borderRadius:
+                                BorderRadius.circular(RadiusTokens.radiusLg),
+                          ),
+                          child: Text(
+                            msg.text,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: msg.isMe
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                ),
                           ),
                         ),
                       ),
@@ -139,55 +132,35 @@ class ChatScreen extends StatelessWidget {
 
           // Input area
           EnhancedCard(
-            child: Container(
-              padding: ResponsiveHelper.getResponsivePadding(context),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                        borderRadius:
-                            BorderRadius.circular(RadiusTokens.radiusLg),
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Ask me about fashion...',
-                          hintStyle: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: SpacingTokens.space16,
-                            vertical: SpacingTokens.space12,
-                          ),
-                        ),
-                      ),
-                    ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ModernTextField(
+                    hintText: 'Ask me about fashion...',
+                    prefixIcon: const Icon(Icons.chat_bubble_outline),
+                    maxLines: 1,
                   ),
-                  const SizedBox(width: SpacingTokens.space12),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.secondary,
-                        ],
-                      ),
-                      borderRadius:
-                          BorderRadius.circular(RadiusTokens.radiusLg),
+                ),
+                const SizedBox(width: SpacingTokens.space8),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary,
+                      ],
                     ),
-                    child: IconButton(
-                      onPressed: () {
-                        // TODO: Implement send message logic
-                      },
-                      icon: const Icon(Icons.send),
-                      color: Colors.white,
-                    ),
+                    borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
                   ),
-                ],
-              ),
+                  child: IconButton(
+                    onPressed: () {
+                      // TODO: Implement send message logic
+                    },
+                    icon: const Icon(Icons.send),
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
