@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/meetings/meetings_bloc.dart';
-import '../../blocs/meetings/meetings_state.dart'
-    hide MeetingsState, MeetingsLoading, MeetingsError, MeetingsLoaded;
-import '../../models/meeting.dart';
+import '../../blocs/meetings/meetings_state.dart';
 import '../../widgets/enhanced_card.dart';
 import '../../theme/responsive.dart';
 
@@ -24,10 +22,7 @@ class PastMeetingsScreen extends StatelessWidget {
         }
 
         if (state is MeetingsLoaded) {
-          final meetings = (state as MeetingsLoaded)
-              .meetings
-              .where((m) => m.isPast)
-              .toList();
+          final meetings = state.meetings.where((m) => m.isPast).toList();
 
           if (meetings.isEmpty) {
             return Center(

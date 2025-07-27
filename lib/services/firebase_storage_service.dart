@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 
 class FirebaseStorageService {
   static final FirebaseStorageService _instance =
@@ -20,7 +19,6 @@ class FirebaseStorageService {
   Future<String?> uploadItemImage(File imageFile, String itemId) async {
     try {
       if (_currentUserId == null) {
-        debugPrint('Firebase Storage: User not authenticated');
         return null;
       }
 
@@ -33,7 +31,6 @@ class FirebaseStorageService {
       final Reference ref = _storage.ref().child(path);
 
       // Upload the file
-      debugPrint('Firebase Storage: Uploading image to $path');
       final UploadTask uploadTask = ref.putFile(
         imageFile,
         SettableMetadata(
@@ -52,10 +49,8 @@ class FirebaseStorageService {
       // Get the download URL
       final String downloadUrl = await snapshot.ref.getDownloadURL();
 
-      debugPrint('Firebase Storage: Upload successful, URL: $downloadUrl');
       return downloadUrl;
     } catch (e) {
-      debugPrint('Firebase Storage: Upload failed: $e');
       return null;
     }
   }
@@ -64,20 +59,16 @@ class FirebaseStorageService {
   Future<bool> deleteItemImage(String imageUrl) async {
     try {
       if (_currentUserId == null) {
-        debugPrint('Firebase Storage: User not authenticated');
         return false;
       }
 
       // Extract the path from the URL
       final Reference ref = _storage.refFromURL(imageUrl);
 
-      debugPrint('Firebase Storage: Deleting image at ${ref.fullPath}');
       await ref.delete();
 
-      debugPrint('Firebase Storage: Image deleted successfully');
       return true;
     } catch (e) {
-      debugPrint('Firebase Storage: Delete failed: $e');
       return false;
     }
   }
@@ -88,7 +79,6 @@ class FirebaseStorageService {
       final Reference ref = _storage.refFromURL(imageUrl);
       return await ref.getMetadata();
     } catch (e) {
-      debugPrint('Firebase Storage: Failed to get metadata: $e');
       return null;
     }
   }
@@ -97,7 +87,6 @@ class FirebaseStorageService {
   Future<List<Reference>> getUserImages() async {
     try {
       if (_currentUserId == null) {
-        debugPrint('Firebase Storage: User not authenticated');
         return [];
       }
 
@@ -107,7 +96,6 @@ class FirebaseStorageService {
 
       return result.items;
     } catch (e) {
-      debugPrint('Firebase Storage: Failed to list images: $e');
       return [];
     }
   }

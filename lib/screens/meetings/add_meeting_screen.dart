@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/meetings/meetings_bloc.dart';
-import '../../blocs/meetings/meetings_event.dart' hide AddMeeting;
+import '../../blocs/meetings/meetings_event.dart';
+import '../../blocs/meetings/meetings_state.dart';
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_event.dart';
-import '../../blocs/friends/friends_state.dart';
 import '../../models/meeting.dart';
 import '../../widgets/enhanced_card.dart';
-import '../../widgets/gradient_button.dart';
 import '../../widgets/modern_text_field.dart';
 import 'package:dress_app/models/clothing_item.dart';
 import 'package:dress_app/models/friend.dart';
 import 'package:dress_app/screens/meetings/select_clothes_screen.dart';
 import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
-import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/theme/responsive.dart';
 
 class AddMeetingScreen extends StatefulWidget {
@@ -139,7 +137,25 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<MeetingsBloc, MeetingsState>(
+      listener: (context, state) {
+        if (state is MeetingActionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else if (state is MeetingsError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${state.message}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
       appBar: AppBar(
         title: Text(
           'Add New Meeting',
@@ -230,11 +246,14 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     location: _locationController.text,
                     date: _selectedDate,
-                    participants: _participantsController.text
-                        .split(',')
-                        .map((e) => e.trim())
-                        .where((e) => e.isNotEmpty)
-                        .toList(),
+                    participants: [
+                      // Combine manual participants with selected friends
+                      ..._participantsController.text
+                          .split(',')
+                          .map((e) => e.trim())
+                          .where((e) => e.isNotEmpty),
+                      ..._invitedFriends.map((friend) => friend.name),
+                    ].toSet().toList(), // Remove duplicates
                     wornItems: _selectedClothes,
                     foodNotes: _foodNotesController.text.isEmpty
                         ? null
@@ -249,6 +268,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
               child: const Text('Save Meeting'),
             ),
           ],
+        ),
         ),
       ),
     );

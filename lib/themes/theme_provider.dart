@@ -124,7 +124,7 @@ class ThemeProvider extends ChangeNotifier {
         await _storage.write(key: 'theme_colors', value: jsonEncode(colorData));
       }
     } catch (e) {
-      print('Error saving theme preferences: $e');
+      // Error saving theme preferences - continue silently
     }
   }
 
@@ -161,7 +161,7 @@ class ThemeProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      print('Error loading theme preferences: $e');
+      // Error loading theme preferences - use defaults
       // Default to light theme if there's an error
       _themeType = ThemeType.light;
       _themeData = lightMode;

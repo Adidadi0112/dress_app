@@ -3,7 +3,6 @@ import 'package:dress_app/screens/meetings/past_meetings_screen.dart';
 import 'package:dress_app/screens/meetings/future_meetings_screen.dart';
 import 'package:dress_app/screens/meetings/add_meeting_screen.dart';
 import 'package:dress_app/theme/responsive.dart';
-import 'package:dress_app/theme/tokens.dart';
 
 class MeetingsScreen extends StatelessWidget {
   const MeetingsScreen({super.key});

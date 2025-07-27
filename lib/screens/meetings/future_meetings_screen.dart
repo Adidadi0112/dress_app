@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/meetings/meetings_bloc.dart';
-import '../../blocs/meetings/meetings_state.dart'
-    hide MeetingsState, MeetingsLoading, MeetingsError, MeetingsLoaded;
-import '../../blocs/meetings/meetings_event.dart'
-    hide UpdateMeeting, DeleteMeeting;
+import '../../blocs/meetings/meetings_state.dart';
+import '../../blocs/meetings/meetings_event.dart';
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_event.dart';
 import '../../models/meeting.dart';
 import '../../widgets/enhanced_card.dart';
-import '../../widgets/gradient_button.dart';
 import '../../theme/responsive.dart';
 
 class FutureMeetingsScreen extends StatelessWidget {
@@ -153,21 +150,34 @@ class FutureMeetingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MeetingsBloc, MeetingsState>(
-      builder: (context, state) {
-        if (state is MeetingsLoading) {
-          return const Center(child: CircularProgressIndicator());
+    return BlocListener<MeetingsBloc, MeetingsState>(
+      listener: (context, state) {
+        if (state is MeetingActionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.green,
+            ),
+          );
         }
+      },
+      child: BlocBuilder<MeetingsBloc, MeetingsState>(
+        builder: (context, state) {
+          if (state is MeetingsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if (state is MeetingsError) {
-          return Center(child: Text('Error: ${state.message}'));
-        }
+          if (state is MeetingsError) {
+            return Center(child: Text('Error: ${state.message}'));
+          }
 
-        if (state is MeetingsLoaded) {
-          final meetings = (state as MeetingsLoaded)
-              .meetings
-              .where((m) => !m.isPast)
-              .toList();
+          // Handle both MeetingsLoaded and MeetingActionSuccess states
+          List<Meeting> meetings = [];
+          if (state is MeetingsLoaded) {
+            meetings = state.meetings.where((m) => !m.isPast).toList();
+          } else if (state is MeetingActionSuccess) {
+            meetings = state.meetings.where((m) => !m.isPast).toList();
+          }
 
           if (meetings.isEmpty) {
             return Center(
@@ -264,10 +274,8 @@ class FutureMeetingsScreen extends StatelessWidget {
               );
             },
           );
-        }
-
-        return const Center(child: Text('Unknown state'));
-      },
+        },
+      ),
     );
   }
 }

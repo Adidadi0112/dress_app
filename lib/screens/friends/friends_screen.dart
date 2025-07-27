@@ -4,6 +4,7 @@ import 'package:dress_app/blocs/friends/friends_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/blocs/meetings/meetings_bloc.dart';
+import 'package:dress_app/blocs/meetings/meetings_event.dart';
 import 'package:dress_app/models/friend.dart';
 import 'package:dress_app/models/friend_request.dart';
 import 'package:dress_app/screens/friends/add_friend_screen.dart';

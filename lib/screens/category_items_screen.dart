@@ -413,7 +413,6 @@ class CategoryItemsScreen extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
-          print('Error loading local image: $error');
           return const Center(child: Icon(Icons.image_not_supported, size: 50));
         },
       );
@@ -425,7 +424,6 @@ class CategoryItemsScreen extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
-          print('Error loading network image: $error');
           return const Center(child: Icon(Icons.image_not_supported, size: 50));
         },
       );

@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:confetti/confetti.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../themes/theme_provider.dart';
-import '../themes/light_mode.dart';
-import '../themes/dark_mode.dart';
-import '../themes/custom_pastel_mode.dart';
-import '../widgets/enhanced_card.dart';
-import '../widgets/gradient_button.dart';
 import 'package:dress_app/theme/tokens.dart';
-import 'package:dress_app/themes/theme_provider.dart';
 
 class ThemeAndStickersScreen extends StatefulWidget {
   const ThemeAndStickersScreen({Key? key}) : super(key: key);
@@ -590,8 +583,7 @@ class _ThemeAndStickersScreenState extends State<ThemeAndStickersScreen>
           child: _getStickerIcon(stickerName),
         ),
       ),
-    )
-        ;
+    );
   }
 
   Widget _getStickerIcon(String stickerName) {

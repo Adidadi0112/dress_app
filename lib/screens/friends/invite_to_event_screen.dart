@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../blocs/meetings/meetings_bloc.dart';
+import '../../blocs/meetings/meetings_state.dart';
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_state.dart';
-import '../../blocs/meetings/meetings_state.dart'
-    hide MeetingsState, MeetingsLoaded;
 import '../../models/meeting.dart';
 import '../../models/friend.dart';
 import '../../widgets/enhanced_card.dart';
-import '../../widgets/gradient_button.dart';
 
 class InviteToEventScreen extends StatefulWidget {
   final Meeting? meeting;
@@ -23,7 +21,7 @@ class InviteToEventScreen extends StatefulWidget {
 
 class _InviteToEventScreenState extends State<InviteToEventScreen> {
   Meeting? _selectedMeeting;
-  List<Friend> _selectedFriends = [];
+  final List<Friend> _selectedFriends = [];
 
   @override
   void initState() {
@@ -73,10 +71,8 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                       BlocBuilder<MeetingsBloc, MeetingsState>(
                         builder: (context, state) {
                           if (state is MeetingsLoaded) {
-                            final meetings = (state as MeetingsLoaded)
-                                .meetings
-                                .where((m) => !m.isPast)
-                                .toList();
+                            final meetings =
+                                state.meetings.where((m) => !m.isPast).toList();
                             return Column(
                               children: meetings.map((meeting) {
                                 return RadioListTile<Meeting>(

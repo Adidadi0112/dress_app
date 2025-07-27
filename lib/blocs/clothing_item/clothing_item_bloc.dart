@@ -68,7 +68,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
           debugPrint(
               'ClothingItemBloc: Image uploaded successfully: $uploadedImageUrl');
         } else {
-          emit(ClothingItemError('Failed to upload image'));
+          emit(const ClothingItemError('Failed to upload image'));
           return;
         }
       }
@@ -85,7 +85,8 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
           emit(ClothingItemActionSuccess('Item added successfully!', items));
           debugPrint('ClothingItemBloc: Item added successfully');
         } else {
-          emit(ClothingItemError('Item added but failed to refresh list'));
+          emit(
+              const ClothingItemError('Item added but failed to refresh list'));
         }
       } else {
         emit(ClothingItemError(result['message']));
@@ -121,7 +122,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
           debugPrint(
               'ClothingItemBloc: New image uploaded successfully: $uploadedImageUrl');
         } else {
-          emit(ClothingItemError('Failed to upload new image'));
+          emit(const ClothingItemError('Failed to upload new image'));
           return;
         }
       }
@@ -139,7 +140,8 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
           emit(ClothingItemActionSuccess('Item updated successfully!', items));
           debugPrint('ClothingItemBloc: Item updated successfully');
         } else {
-          emit(ClothingItemError('Item updated but failed to refresh list'));
+          emit(const ClothingItemError(
+              'Item updated but failed to refresh list'));
         }
       } else {
         emit(ClothingItemError(result['message']));
@@ -186,7 +188,8 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
           emit(ClothingItemActionSuccess('Item deleted successfully!', items));
           debugPrint('ClothingItemBloc: Item deleted successfully');
         } else {
-          emit(ClothingItemError('Item deleted but failed to refresh list'));
+          emit(const ClothingItemError(
+              'Item deleted but failed to refresh list'));
         }
       } else {
         emit(ClothingItemError(result['message']));

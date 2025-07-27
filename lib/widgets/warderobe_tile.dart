@@ -38,7 +38,7 @@ class WarderobeTile extends StatelessWidget {
                     const BorderRadius.vertical(top: Radius.circular(16)),
                 child: Container(
                   width: double.infinity,
-                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   child: _buildImageWidget(),
                 ),
               ),
@@ -98,7 +98,6 @@ class WarderobeTile extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
-          print('Error loading local image: $error');
           return const Center(child: Icon(Icons.image_not_supported, size: 50));
         },
       );
@@ -110,7 +109,6 @@ class WarderobeTile extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
-          print('Error loading network image: $error');
           return const Center(child: Icon(Icons.image_not_supported, size: 50));
         },
       );

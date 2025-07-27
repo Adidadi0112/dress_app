@@ -31,11 +31,6 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
     if (currentState is ItemLoaded) {
       final updatedItems = List<Item>.from(currentState.items)..add(event.item);
       emit(ItemLoaded(updatedItems));
-      print('✅ [Bloc] Added item: ${event.item}');
-      print('📦 [Bloc] Updated list (${updatedItems.length} items):');
-      for (var i in updatedItems) {
-        print('  • $i');
-      }
     } else {
       emit(ItemLoaded([event.item]));
     }

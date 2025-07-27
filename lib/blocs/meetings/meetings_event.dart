@@ -29,10 +29,36 @@ class UpdateMeeting extends MeetingsEvent {
 }
 
 class DeleteMeeting extends MeetingsEvent {
-  final String id;
+  final String meetingId;
 
-  const DeleteMeeting(this.id);
+  const DeleteMeeting(this.meetingId);
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [meetingId];
+}
+
+class AddFriendToMeeting extends MeetingsEvent {
+  final String meetingId;
+  final String friendName;
+
+  const AddFriendToMeeting({
+    required this.meetingId,
+    required this.friendName,
+  });
+
+  @override
+  List<Object> get props => [meetingId, friendName];
+}
+
+class RemoveFriendFromMeeting extends MeetingsEvent {
+  final String meetingId;
+  final String friendName;
+
+  const RemoveFriendFromMeeting({
+    required this.meetingId,
+    required this.friendName,
+  });
+
+  @override
+  List<Object> get props => [meetingId, friendName];
 }

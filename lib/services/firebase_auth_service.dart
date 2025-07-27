@@ -98,11 +98,8 @@ class FirebaseAuthService {
   // Sign out
   Future<void> signOut() async {
     try {
-      print('FirebaseAuthService: Starting sign out...');
       await _auth.signOut();
-      print('FirebaseAuthService: Sign out completed successfully');
     } catch (e) {
-      print('FirebaseAuthService: Sign out error: $e');
       rethrow;
     }
   }
@@ -159,7 +156,6 @@ class FirebaseAuthService {
       }
       return null;
     } catch (e) {
-      print('Error getting user data: $e');
       return null;
     }
   }

@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/item/item_bloc.dart';
 import '../../blocs/item/item_state.dart';
 import '../../models/item.dart';
-import '../../models/meeting.dart';
 import '../../widgets/enhanced_card.dart';
-import '../../widgets/gradient_button.dart';
 import '../../theme/responsive.dart';
 
 class SelectClothesScreen extends StatefulWidget {

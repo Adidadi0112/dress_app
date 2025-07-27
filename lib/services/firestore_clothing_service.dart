@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dress_app/models/clothing_item.dart';
-import 'package:flutter/foundation.dart';
 
 class FirestoreClothingService {
   static final FirestoreClothingService _instance =
@@ -45,15 +44,12 @@ class FirestoreClothingService {
       // Add the item to Firestore
       DocumentReference docRef = await _clothingItemsCollection!.add(itemData);
 
-      debugPrint('Firestore: Created clothing item with ID: ${docRef.id}');
-
       return {
         'type': 'success',
         'message': 'Clothing item created successfully',
         'data': {'id': docRef.id},
       };
     } catch (e) {
-      debugPrint('Firestore: Failed to create clothing item: $e');
       return {
         'type': 'error',
         'message': 'Failed to create clothing item: $e',
@@ -80,14 +76,11 @@ class FirestoreClothingService {
         return ClothingItem.fromMap(data, doc.id);
       }).toList();
 
-      debugPrint('Firestore: Retrieved ${items.length} clothing items');
-
       return {
         'type': 'success',
         'data': items,
       };
     } catch (e) {
-      debugPrint('Firestore: Failed to fetch clothing items: $e');
       return {
         'type': 'error',
         'message': 'Failed to fetch clothing items: $e',
@@ -129,14 +122,11 @@ class FirestoreClothingService {
 
       await _clothingItemsCollection!.doc(itemId).update(itemData);
 
-      debugPrint('Firestore: Updated clothing item with ID: $itemId');
-
       return {
         'type': 'success',
         'message': 'Clothing item updated successfully',
       };
     } catch (e) {
-      debugPrint('Firestore: Failed to update clothing item: $e');
       return {
         'type': 'error',
         'message': 'Failed to update clothing item: $e',
@@ -156,14 +146,11 @@ class FirestoreClothingService {
 
       await _clothingItemsCollection!.doc(itemId).delete();
 
-      debugPrint('Firestore: Deleted clothing item with ID: $itemId');
-
       return {
         'type': 'success',
         'message': 'Clothing item deleted successfully',
       };
     } catch (e) {
-      debugPrint('Firestore: Failed to delete clothing item: $e');
       return {
         'type': 'error',
         'message': 'Failed to delete clothing item: $e',
@@ -198,7 +185,6 @@ class FirestoreClothingService {
         'data': item,
       };
     } catch (e) {
-      debugPrint('Firestore: Failed to get clothing item: $e');
       return {
         'type': 'error',
         'message': 'Failed to get clothing item: $e',
@@ -221,7 +207,6 @@ class FirestoreClothingService {
         return ClothingItem.fromMap(data, doc.id);
       }).toList();
     } catch (e) {
-      debugPrint('Firestore: Failed to get clothing items by category: $e');
       return [];
     }
   }
@@ -241,7 +226,6 @@ class FirestoreClothingService {
         return ClothingItem.fromMap(data, doc.id);
       }).toList();
     } catch (e) {
-      debugPrint('Firestore: Failed to get clothing items by occasion: $e');
       return [];
     }
   }

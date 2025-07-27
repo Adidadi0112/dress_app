@@ -365,7 +365,6 @@ class FirebaseFriendsService {
         );
       }).toList();
     } catch (e) {
-      print('Error getting all users: $e');
       return [];
     }
   }

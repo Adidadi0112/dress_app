@@ -11,9 +11,6 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        print(
-            'AuthGate: Auth state changed - connectionState: ${snapshot.connectionState}, hasData: ${snapshot.hasData}, user: ${snapshot.data?.email}');
-
         // Show loading while checking auth state
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -25,12 +22,10 @@ class AuthGate extends StatelessWidget {
 
         // If user is logged in, show main app
         if (snapshot.hasData) {
-          print('AuthGate: User is authenticated, showing HomeScreen');
           return const HomeScreen();
         }
 
         // If not logged in, show login/register
-        print('AuthGate: User is not authenticated, showing LoginOrRegister');
 
         // Force clear any dialogs or overlays that might be showing
         WidgetsBinding.instance.addPostFrameCallback((_) {

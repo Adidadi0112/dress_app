@@ -21,26 +21,35 @@ class ClothingItem {
 
   factory ClothingItem.fromMap(Map<String, dynamic> map, String id) {
     return ClothingItem(
-      id: id,
+      id: id.isNotEmpty ? id : (map['id'] ?? ''),
       name: map['name'] ?? '',
       description: map['description'],
       imageUrl: map['imageUrl'],
       categories: List<String>.from(map['categories'] ?? []),
       occasions: List<String>.from(map['occasions'] ?? []),
-      createdAt: map['createdAt']?.toDate(),
-      updatedAt: map['updatedAt']?.toDate(),
+      createdAt: map['createdAt'] != null 
+          ? (map['createdAt'] is DateTime 
+              ? map['createdAt'] as DateTime
+              : DateTime.tryParse(map['createdAt'].toString()))
+          : null,
+      updatedAt: map['updatedAt'] != null 
+          ? (map['updatedAt'] is DateTime 
+              ? map['updatedAt'] as DateTime
+              : DateTime.tryParse(map['updatedAt'].toString()))
+          : null,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'description': description,
       'imageUrl': imageUrl,
       'categories': categories,
       'occasions': occasions,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
+      if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
     };
   }
 

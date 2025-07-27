@@ -8,6 +8,7 @@ import 'package:dress_app/auth/auth_gate.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
 import 'package:dress_app/blocs/item/item_event.dart';
 import 'package:dress_app/blocs/meetings/meetings_bloc.dart';
+import 'package:dress_app/blocs/meetings/meetings_event.dart';
 import 'package:dress_app/blocs/friends/friends_bloc.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_bloc.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_event.dart';
@@ -16,6 +17,8 @@ import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/services/firebase_auth_service.dart';
 import 'package:dress_app/services/firestore_service.dart';
 import 'package:dress_app/services/firestore_clothing_service.dart';
+import 'package:dress_app/services/firestore_meetings_service.dart';
+import 'package:dress_app/services/firebase_friends_service.dart';
 import 'package:dress_app/services/firebase_storage_service.dart';
 import 'firebase_options.dart';
 
@@ -46,6 +49,10 @@ void main() async {
           Provider<FirestoreService>(create: (_) => FirestoreService()),
           Provider<FirestoreClothingService>(
               create: (_) => FirestoreClothingService()),
+          Provider<FirestoreMeetingsService>(
+              create: (_) => FirestoreMeetingsService()),
+          Provider<FirebaseFriendsService>(
+              create: (_) => FirebaseFriendsService()),
           Provider<FirebaseStorageService>(
               create: (_) => FirebaseStorageService()),
         ],

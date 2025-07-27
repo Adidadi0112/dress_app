@@ -32,3 +32,13 @@ class MeetingsError extends MeetingsState {
   @override
   List<Object> get props => [message];
 }
+
+class MeetingActionSuccess extends MeetingsState {
+  final String message;
+  final List<Meeting> meetings;
+
+  const MeetingActionSuccess(this.message, this.meetings);
+
+  @override
+  List<Object> get props => [message, meetings];
+}
