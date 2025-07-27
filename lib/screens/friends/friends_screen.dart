@@ -5,7 +5,8 @@ import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/blocs/meetings/meetings_bloc.dart';
 import 'package:dress_app/models/friend.dart';
-import 'package:dress_app/screens/friends/invite_friend_screen.dart';
+import 'package:dress_app/models/friend_request.dart';
+import 'package:dress_app/screens/friends/add_friend_screen.dart';
 import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
 
 class FriendsScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _FriendsScreenState extends State<FriendsScreen>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const InviteFriendScreen(),
+                  builder: (context) => const AddFriendScreen(),
                 ),
               );
             },
@@ -73,7 +74,7 @@ class _FriendsScreenState extends State<FriendsScreen>
               controller: _tabController,
               children: [
                 _buildFriendsList(state.friends),
-                _buildPendingInvitesList(state.pendingInvites),
+                _buildPendingInvitesList(state.receivedRequests),
               ],
             );
           }
@@ -119,35 +120,48 @@ class _FriendsScreenState extends State<FriendsScreen>
     );
   }
 
-  Widget _buildPendingInvitesList(List<Friend> pendingInvites) {
-    if (pendingInvites.isEmpty) {
+  Widget _buildPendingInvitesList(List<FriendRequest> pendingRequests) {
+    if (pendingRequests.isEmpty) {
       return const Center(
         child: Text('No pending invites'),
       );
     }
 
     return ListView.builder(
-      itemCount: pendingInvites.length,
+      itemCount: pendingRequests.length,
       itemBuilder: (context, index) {
-        final invite = pendingInvites[index];
+        final request = pendingRequests[index];
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
-              child: Text(invite.name[0]),
+              backgroundImage: request.fromUserProfileImageUrl != null
+                  ? NetworkImage(request.fromUserProfileImageUrl!)
+                  : null,
+              child: request.fromUserProfileImageUrl == null
+                  ? Text(request.fromUserName.isNotEmpty
+                      ? request.fromUserName[0]
+                      : '?')
+                  : null,
             ),
-            title: Text(invite.name),
-            subtitle: Text(invite.email),
+            title: Text(request.fromUserName),
+            subtitle: Text(request.fromUserEmail),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: const Icon(Icons.check, color: Colors.green),
                   onPressed: () {
-                    context
-                        .read<FriendsBloc>()
-                        .add(AcceptFriendInvite(invite.id));
+                    context.read<FriendsBloc>().add(
+                        AcceptFriendRequest(request.id, request.fromUserId));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Accepted friend request from ${request.fromUserName}'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
                   },
                 ),
                 IconButton(
@@ -155,7 +169,14 @@ class _FriendsScreenState extends State<FriendsScreen>
                   onPressed: () {
                     context
                         .read<FriendsBloc>()
-                        .add(RejectFriendInvite(invite.id));
+                        .add(RejectFriendRequest(request.id));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Rejected friend request from ${request.fromUserName}'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   },
                 ),
               ],

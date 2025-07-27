@@ -74,3 +74,45 @@ class RejectFriendInvite extends FriendsEvent {
   @override
   List<Object> get props => [friendId];
 }
+
+// New Firebase-specific events
+class SearchUserByEmail extends FriendsEvent {
+  final String email;
+
+  const SearchUserByEmail(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+class SendFriendRequest extends FriendsEvent {
+  final String targetUserId;
+
+  const SendFriendRequest(this.targetUserId);
+
+  @override
+  List<Object> get props => [targetUserId];
+}
+
+class AcceptFriendRequest extends FriendsEvent {
+  final String requestId;
+  final String fromUserId;
+
+  const AcceptFriendRequest(this.requestId, this.fromUserId);
+
+  @override
+  List<Object> get props => [requestId, fromUserId];
+}
+
+class RejectFriendRequest extends FriendsEvent {
+  final String requestId;
+
+  const RejectFriendRequest(this.requestId);
+
+  @override
+  List<Object> get props => [requestId];
+}
+
+class LoadPendingRequests extends FriendsEvent {}
+
+class LoadSentRequests extends FriendsEvent {}

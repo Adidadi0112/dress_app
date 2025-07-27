@@ -1,11 +1,10 @@
-import 'package:dress_app/screens/wardrobe_screen.dart';
+import 'package:dress_app/screens/clothing_wardrobe_screen.dart';
 import 'package:dress_app/screens/meetings/meetings_screen.dart';
 import 'package:dress_app/screens/friends/friends_screen.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 import 'package:dress_app/widgets/responsive_layout.dart';
 import 'package:dress_app/theme/tokens.dart';
-import 'package:dress_app/theme/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -93,7 +92,7 @@ class AccountScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const WardrobeScreen()),
+                        builder: (context) => const ClothingWardrobeScreen()),
                   );
                 },
               ),

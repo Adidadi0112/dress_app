@@ -2,197 +2,277 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:dress_app/blocs/friends/friends_state.dart';
 import 'package:dress_app/models/friend.dart';
-import 'package:dress_app/services/user_service.dart';
+import 'package:dress_app/models/friend_request.dart';
+import 'package:dress_app/services/firebase_friends_service.dart';
+import 'dart:async';
 
 class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
-  final UserService _userService = UserService();
+  final FirebaseFriendsService _friendsService = FirebaseFriendsService();
 
-  // We'll keep a local cache of friends
-  final List<Friend> _friends = [];
+  // Stream subscriptions
+  StreamSubscription<List<Friend>>? _friendsSubscription;
+  StreamSubscription<List<FriendRequest>>? _receivedRequestsSubscription;
+  StreamSubscription<List<FriendRequest>>? _sentRequestsSubscription;
 
-  // We'll still use mock data for pending invites since the API doesn't support this
-  final List<Friend> _pendingInvites = [
-    Friend(
-      id: '4',
-      name: 'Sarah Williams',
-      email: 'sarah.williams@example.com',
-      avatarUrl: null,
-      isConfirmed: false,
-    ),
-  ];
+  // Current data
+  List<Friend> _friends = [];
+  List<FriendRequest> _receivedRequests = [];
+  List<FriendRequest> _sentRequests = [];
 
   FriendsBloc() : super(FriendsInitial()) {
     on<LoadFriends>(_onLoadFriends);
     on<AddFriend>(_onAddFriend);
     on<RemoveFriend>(_onRemoveFriend);
     on<UpdateFriend>(_onUpdateFriend);
+    on<InviteFriend>(_onInviteFriend);
     on<SendFriendInvite>(_onSendFriendInvite);
     on<AcceptFriendInvite>(_onAcceptFriendInvite);
     on<RejectFriendInvite>(_onRejectFriendInvite);
-    on<InviteFriend>(_onInviteFriend);
+
+    // New Firebase events
+    on<SearchUserByEmail>(_onSearchUserByEmail);
+    on<SendFriendRequest>(_onSendFriendRequest);
+    on<AcceptFriendRequest>(_onAcceptFriendRequest);
+    on<RejectFriendRequest>(_onRejectFriendRequest);
+    on<LoadPendingRequests>(_onLoadPendingRequests);
+    on<LoadSentRequests>(_onLoadSentRequests);
+    on<_UpdateFriendsData>(_onUpdateFriendsData);
+    on<_UpdateReceivedRequests>(_onUpdateReceivedRequests);
+    on<_UpdateSentRequests>(_onUpdateSentRequests);
   }
 
   void _onLoadFriends(LoadFriends event, Emitter<FriendsState> emit) async {
     emit(FriendsLoading());
     try {
-      // Fetch users from the API
-      final users = await _userService.getUsers();
+      // Subscribe to friends stream
+      await _friendsSubscription?.cancel();
+      _friendsSubscription = _friendsService.getFriends().listen((friends) {
+        add(_UpdateFriendsData(friends));
+      });
 
-      // Update our local cache
-      _friends.clear();
-      _friends.addAll(users);
+      // Subscribe to received requests stream
+      await _receivedRequestsSubscription?.cancel();
+      _receivedRequestsSubscription =
+          _friendsService.getPendingFriendRequests().listen((requests) {
+        add(_UpdateReceivedRequests(requests));
+      });
 
-      emit(FriendsLoaded(
-        friends: List.from(_friends),
-        pendingInvites: List.from(_pendingInvites),
-      ));
+      // Subscribe to sent requests stream
+      await _sentRequestsSubscription?.cancel();
+      _sentRequestsSubscription =
+          _friendsService.getSentFriendRequests().listen((requests) {
+        add(_UpdateSentRequests(requests));
+      });
     } catch (e) {
       emit(FriendsError('Failed to load friends: ${e.toString()}'));
     }
   }
 
-  void _onAddFriend(AddFriend event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // In a real app, you would add the friend to the database
-        // For now, we'll just add it to our local cache
-        _friends.add(event.friend);
+  void _onUpdateFriendsData(
+      _UpdateFriendsData event, Emitter<FriendsState> emit) {
+    _friends = event.friends;
+    _emitCurrentState(emit);
+  }
 
-        emit(FriendsLoaded(
-          friends: List.from(_friends),
-          pendingInvites: currentState.pendingInvites,
-        ));
-      } catch (e) {
-        emit(FriendsError('Failed to add friend: ${e.toString()}'));
+  void _onUpdateReceivedRequests(
+      _UpdateReceivedRequests event, Emitter<FriendsState> emit) {
+    _receivedRequests = event.requests;
+    _emitCurrentState(emit);
+  }
+
+  void _onUpdateSentRequests(
+      _UpdateSentRequests event, Emitter<FriendsState> emit) {
+    _sentRequests = event.requests;
+    _emitCurrentState(emit);
+  }
+
+  void _emitCurrentState(Emitter<FriendsState> emit) {
+    emit(FriendsLoaded(
+      friends: List.from(_friends),
+      receivedRequests: List.from(_receivedRequests),
+      sentRequests: List.from(_sentRequests),
+      pendingInvites: _receivedRequests
+          .map((req) => Friend(
+                id: req.fromUserId,
+                name: req.fromUserName,
+                email: req.fromUserEmail,
+                avatarUrl: req.fromUserProfileImageUrl,
+                isConfirmed: false,
+              ))
+          .toList(),
+    ));
+  }
+
+  void _onSearchUserByEmail(
+      SearchUserByEmail event, Emitter<FriendsState> emit) async {
+    try {
+      final result = await _friendsService.searchUserByEmail(event.email);
+
+      if (result['type'] == 'success') {
+        emit(UserSearchResult(result['data']));
+      } else {
+        emit(FriendsError(result['message']));
       }
+    } catch (e) {
+      emit(FriendsError('Failed to search user: ${e.toString()}'));
     }
   }
 
-  void _onRemoveFriend(RemoveFriend event, Emitter<FriendsState> emit) {
+  void _onSendFriendRequest(
+      SendFriendRequest event, Emitter<FriendsState> emit) async {
     try {
-      _friends.removeWhere((friend) => friend.id == event.friendId);
-      emit(FriendsLoaded(
-        friends: List.from(_friends),
-        pendingInvites: List.from(_pendingInvites),
-      ));
+      final result =
+          await _friendsService.sendFriendRequest(event.targetUserId);
+
+      if (result['type'] == 'success') {
+        emit(FriendRequestSent(result['message']));
+      } else {
+        emit(FriendsError(result['message']));
+      }
     } catch (e) {
-      emit(FriendsError(e.toString()));
+      emit(FriendsError('Failed to send friend request: ${e.toString()}'));
+    }
+  }
+
+  void _onAcceptFriendRequest(
+      AcceptFriendRequest event, Emitter<FriendsState> emit) async {
+    try {
+      final result = await _friendsService.acceptFriendRequest(
+          event.requestId, event.fromUserId);
+
+      if (result['type'] == 'success') {
+        emit(FriendRequestAccepted(result['data']));
+      } else {
+        emit(FriendsError(result['message']));
+      }
+    } catch (e) {
+      emit(FriendsError('Failed to accept friend request: ${e.toString()}'));
+    }
+  }
+
+  void _onRejectFriendRequest(
+      RejectFriendRequest event, Emitter<FriendsState> emit) async {
+    try {
+      final result = await _friendsService.rejectFriendRequest(event.requestId);
+
+      if (result['type'] == 'success') {
+        emit(FriendRequestRejected(result['message']));
+      } else {
+        emit(FriendsError(result['message']));
+      }
+    } catch (e) {
+      emit(FriendsError('Failed to reject friend request: ${e.toString()}'));
+    }
+  }
+
+  // Legacy methods for backward compatibility
+  void _onAddFriend(AddFriend event, Emitter<FriendsState> emit) {
+    // This is now handled by the real-time streams
+    _emitCurrentState(emit);
+  }
+
+  void _onRemoveFriend(RemoveFriend event, Emitter<FriendsState> emit) async {
+    try {
+      final result = await _friendsService.removeFriend(event.friendId);
+
+      if (result['type'] == 'error') {
+        emit(FriendsError(result['message']));
+      }
+    } catch (e) {
+      emit(FriendsError('Failed to remove friend: ${e.toString()}'));
     }
   }
 
   void _onUpdateFriend(UpdateFriend event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // In a real app, you would update the friend in the database
-        // For now, we'll just update it in our local cache
-        final index =
-            _friends.indexWhere((friend) => friend.id == event.friend.id);
-        if (index != -1) {
-          _friends[index] = event.friend;
-        }
+    _emitCurrentState(emit);
+  }
 
-        emit(FriendsLoaded(
-          friends: List.from(_friends),
-          pendingInvites: currentState.pendingInvites,
-        ));
-      } catch (e) {
-        emit(FriendsError('Failed to update friend: ${e.toString()}'));
+  void _onInviteFriend(InviteFriend event, Emitter<FriendsState> emit) async {
+    try {
+      final searchResult = await _friendsService.searchUserByEmail(event.email);
+
+      if (searchResult['type'] == 'success') {
+        final userId = searchResult['data']['id'];
+        final requestResult = await _friendsService.sendFriendRequest(userId);
+
+        if (requestResult['type'] == 'success') {
+          emit(FriendRequestSent('Friend request sent to ${event.name}'));
+        } else {
+          emit(FriendsError(requestResult['message']));
+        }
+      } else {
+        emit(FriendsError(searchResult['message']));
       }
+    } catch (e) {
+      emit(FriendsError('Failed to invite friend: ${e.toString()}'));
     }
   }
 
-  void _onSendFriendInvite(SendFriendInvite event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // In a real app, you would send an invite through an API
-        // For now, we'll just add it to our local pending invites
-        final newInvite = Friend(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          name: event.name,
-          email: event.email,
-          isConfirmed: false,
-        );
-
-        _pendingInvites.add(newInvite);
-
-        emit(FriendsLoaded(
-          friends: currentState.friends,
-          pendingInvites: List.from(_pendingInvites),
-        ));
-        emit(FriendInviteSent(event.email));
-      } catch (e) {
-        emit(FriendsError('Failed to send invite: ${e.toString()}'));
-      }
-    }
+  void _onSendFriendInvite(
+      SendFriendInvite event, Emitter<FriendsState> emit) async {
+    add(InviteFriend(email: event.email, name: event.name));
   }
 
   void _onAcceptFriendInvite(
-      AcceptFriendInvite event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // Find the invite
-        final invite =
-            _pendingInvites.firstWhere((invite) => invite.id == event.friendId);
-
-        // Create a confirmed friend from the invite
-        final confirmedFriend = invite.copyWith(isConfirmed: true);
-
-        // Remove from pending invites
-        _pendingInvites.removeWhere((invite) => invite.id == event.friendId);
-
-        // Add to friends
-        _friends.add(confirmedFriend);
-
-        emit(FriendsLoaded(
-          friends: List.from(_friends),
-          pendingInvites: List.from(_pendingInvites),
-        ));
-        emit(FriendInviteAccepted(confirmedFriend));
-      } catch (e) {
-        emit(FriendsError('Failed to accept invite: ${e.toString()}'));
-      }
+      AcceptFriendInvite event, Emitter<FriendsState> emit) async {
+    try {
+      final request = _receivedRequests.firstWhere(
+        (req) => req.fromUserId == event.friendId,
+      );
+      add(AcceptFriendRequest(request.id, request.fromUserId));
+    } catch (e) {
+      emit(FriendsError('Request not found'));
     }
   }
 
   void _onRejectFriendInvite(
-      RejectFriendInvite event, Emitter<FriendsState> emit) {
-    final currentState = state;
-    if (currentState is FriendsLoaded) {
-      try {
-        // Remove from pending invites
-        _pendingInvites.removeWhere((invite) => invite.id == event.friendId);
-
-        emit(FriendsLoaded(
-          friends: currentState.friends,
-          pendingInvites: List.from(_pendingInvites),
-        ));
-        emit(FriendInviteRejected(event.friendId));
-      } catch (e) {
-        emit(FriendsError('Failed to reject invite: ${e.toString()}'));
-      }
-    }
-  }
-
-  void _onInviteFriend(InviteFriend event, Emitter<FriendsState> emit) {
+      RejectFriendInvite event, Emitter<FriendsState> emit) async {
     try {
-      // In a real app, this would send an invitation via API
-      // For now, we'll just add to pending invites
-      final newInvite = Friend(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: event.name,
-        email: event.email,
+      final request = _receivedRequests.firstWhere(
+        (req) => req.fromUserId == event.friendId,
       );
-      _pendingInvites.add(newInvite);
-      emit(FriendsLoaded(
-        friends: List.from(_friends),
-        pendingInvites: List.from(_pendingInvites),
-      ));
+      add(RejectFriendRequest(request.id));
     } catch (e) {
-      emit(FriendsError(e.toString()));
+      emit(FriendsError('Request not found'));
     }
   }
+
+  void _onLoadPendingRequests(
+      LoadPendingRequests event, Emitter<FriendsState> emit) {
+    add(LoadFriends());
+  }
+
+  void _onLoadSentRequests(LoadSentRequests event, Emitter<FriendsState> emit) {
+    add(LoadFriends());
+  }
+
+  @override
+  Future<void> close() {
+    _friendsSubscription?.cancel();
+    _receivedRequestsSubscription?.cancel();
+    _sentRequestsSubscription?.cancel();
+    return super.close();
+  }
+}
+
+// Internal events for stream updates
+class _UpdateFriendsData extends FriendsEvent {
+  final List<Friend> friends;
+  const _UpdateFriendsData(this.friends);
+  @override
+  List<Object> get props => [friends];
+}
+
+class _UpdateReceivedRequests extends FriendsEvent {
+  final List<FriendRequest> requests;
+  const _UpdateReceivedRequests(this.requests);
+  @override
+  List<Object> get props => [requests];
+}
+
+class _UpdateSentRequests extends FriendsEvent {
+  final List<FriendRequest> requests;
+  const _UpdateSentRequests(this.requests);
+  @override
+  List<Object> get props => [requests];
 }

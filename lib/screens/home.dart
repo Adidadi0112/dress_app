@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
 import 'package:dress_app/blocs/item/item_state.dart';
 import 'package:dress_app/models/item.dart';
@@ -8,6 +9,7 @@ import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/warderobe_tile.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/theme/responsive.dart';
+import 'package:dress_app/services/firebase_auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +20,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+  String? userName;
+  final FirebaseAuthService _authService = FirebaseAuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // First try to get the display name from Firebase Auth
+      if (user.displayName != null && user.displayName!.isNotEmpty) {
+        setState(() {
+          userName = user.displayName;
+        });
+      } else {
+        // If no display name, try to get from Firestore
+        final userData = await _authService.getUserData(user.uid);
+        if (userData != null) {
+          setState(() {
+            userName = userData.name;
+          });
+        } else {
+          // Fallback to email or 'User'
+          setState(() {
+            userName = user.email?.split('@').first ?? 'User';
+          });
+        }
+      }
+    }
+  }
 
   void _previousItem(List<Item> items) {
     if (currentIndex > 0) {
@@ -120,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                     ),
                     Text(
-                      'Marta Wilgosz',
+                      userName ?? 'Loading...',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onSurface,

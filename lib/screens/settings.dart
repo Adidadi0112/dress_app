@@ -115,22 +115,79 @@ class SettingsScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final optionModel = Provider.of<BottomAppBarOptionProvider>(
-                      context,
-                      listen: false,
-                    );
-
                     try {
                       final authService = Provider.of<FirebaseAuthService>(
                           context,
                           listen: false);
-                      await authService.signOut();
 
+                      // Reset bottom navigation first
+                      final optionModel =
+                          Provider.of<BottomAppBarOptionProvider>(
+                        context,
+                        listen: false,
+                      );
                       optionModel.selectOption(0);
-                      // Navigation will be handled automatically by the StreamBuilder in main.dart
+
+                      // Show confirmation dialog instead of loading
+                      final shouldLogout = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Logout'),
+                          content:
+                              const Text('Are you sure you want to logout?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.error,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: const Text('Logout'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (shouldLogout == true) {
+                        // Show loading indicator
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+
+                        try {
+                          // Sign out from Firebase - AuthGate will handle navigation automatically
+                          await authService.signOut();
+
+                          // Remove loading dialog after successful logout
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+
+                          // AuthGate will automatically handle navigation based on auth state
+                          // No manual navigation needed
+                        } catch (e) {
+                          // Remove loading dialog on error
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                          rethrow;
+                        }
+                      }
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Logout failed: $e')),
+                        SnackBar(
+                          content: Text('Logout failed: $e'),
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                        ),
                       );
                     }
                   },

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dress_app/models/user_model.dart';
+import 'package:flutter/cupertino.dart';
 
 class FirebaseAuthService {
   static final FirebaseAuthService _instance = FirebaseAuthService._internal();
@@ -96,7 +97,14 @@ class FirebaseAuthService {
 
   // Sign out
   Future<void> signOut() async {
-    await _auth.signOut();
+    try {
+      print('FirebaseAuthService: Starting sign out...');
+      await _auth.signOut();
+      print('FirebaseAuthService: Sign out completed successfully');
+    } catch (e) {
+      print('FirebaseAuthService: Sign out error: $e');
+      rethrow;
+    }
   }
 
   // Reset password

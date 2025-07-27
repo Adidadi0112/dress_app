@@ -59,4 +59,24 @@ class Friend {
       isConfirmed: true, // All users from API are considered confirmed
     );
   }
+
+  // Firestore methods
+  Map<String, dynamic> toFirestore() {
+    return {
+      'name': name,
+      'email': email,
+      'avatarUrl': avatarUrl,
+      'isConfirmed': isConfirmed,
+    };
+  }
+
+  factory Friend.fromFirestore(Map<String, dynamic> data, String id) {
+    return Friend(
+      id: id,
+      name: data['name'] ?? '',
+      email: data['email'] ?? '',
+      avatarUrl: data['avatarUrl'],
+      isConfirmed: data['isConfirmed'] ?? true,
+    );
+  }
 }
