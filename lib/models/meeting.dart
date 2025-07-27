@@ -1,6 +1,6 @@
 import 'package:dress_app/models/clothing_item.dart';
 
-class Outing {
+class Meeting {
   final String id;
   final String location;
   final DateTime date;
@@ -9,7 +9,7 @@ class Outing {
   final String? foodNotes;
   final bool isPast;
 
-  Outing({
+  Meeting({
     required this.id,
     required this.location,
     required this.date,
@@ -19,14 +19,13 @@ class Outing {
     required this.isPast,
   });
 
-  factory Outing.fromMap(Map<String, dynamic> map, String id) {
-    return Outing(
+  factory Meeting.fromMap(Map<String, dynamic> map, String id) {
+    return Meeting(
       id: id,
       location: map['location'] ?? '',
       date: DateTime.parse(map['date']),
       participants: List<String>.from(map['participants'] ?? []),
-      wornItems:
-          (map['wornItems'] as List?)
+      wornItems: (map['wornItems'] as List?)
               ?.map(
                 (item) => ClothingItem.fromMap(
                   item as Map<String, dynamic>,

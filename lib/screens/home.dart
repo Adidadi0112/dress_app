@@ -7,6 +7,7 @@ import 'package:dress_app/screens/settings.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/warderobe_tile.dart';
 import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/theme/responsive.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           // User profile
           Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: SpacingTokens.space16,
+            margin: EdgeInsets.symmetric(
+                horizontal: ResponsiveHelper.getResponsivePadding(context).left,
                 vertical: SpacingTokens.space12),
             padding: const EdgeInsets.all(SpacingTokens.space16),
             decoration: BoxDecoration(

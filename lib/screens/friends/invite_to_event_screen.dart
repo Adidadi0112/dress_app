@@ -2,33 +2,33 @@ import 'package:dress_app/theme/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../../blocs/outings/outings_bloc.dart';
+import '../../blocs/meetings/meetings_bloc.dart';
 import '../../blocs/friends/friends_bloc.dart';
 import '../../blocs/friends/friends_state.dart';
-import '../../blocs/outings/outings_state.dart'
-    hide OutingsState, OutingsLoaded;
-import '../../models/outing.dart';
+import '../../blocs/meetings/meetings_state.dart'
+    hide MeetingsState, MeetingsLoaded;
+import '../../models/meeting.dart';
 import '../../models/friend.dart';
 import '../../widgets/enhanced_card.dart';
 import '../../widgets/gradient_button.dart';
 
 class InviteToEventScreen extends StatefulWidget {
-  final Outing? outing;
+  final Meeting? meeting;
 
-  const InviteToEventScreen({Key? key, this.outing}) : super(key: key);
+  const InviteToEventScreen({Key? key, this.meeting}) : super(key: key);
 
   @override
   State<InviteToEventScreen> createState() => _InviteToEventScreenState();
 }
 
 class _InviteToEventScreenState extends State<InviteToEventScreen> {
-  Outing? _selectedOuting;
+  Meeting? _selectedMeeting;
   List<Friend> _selectedFriends = [];
 
   @override
   void initState() {
     super.initState();
-    _selectedOuting = widget.outing;
+    _selectedMeeting = widget.meeting;
   }
 
   @override
@@ -38,10 +38,10 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
         title: const Text('Invite to Event'),
         actions: [
           TextButton(
-            onPressed: _selectedOuting != null && _selectedFriends.isNotEmpty
+            onPressed: _selectedMeeting != null && _selectedFriends.isNotEmpty
                 ? () {
                     Navigator.pop(context, {
-                      'outing': _selectedOuting,
+                      'meeting': _selectedMeeting,
                       'friends': _selectedFriends,
                     });
                   }
@@ -53,7 +53,7 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
       body: Column(
         children: [
           // Event Selection
-          if (widget.outing == null) ...[
+          if (widget.meeting == null) ...[
             Padding(
               padding: const EdgeInsets.all(SpacingTokens.space16),
               child: EnhancedCard(
@@ -70,26 +70,26 @@ class _InviteToEventScreenState extends State<InviteToEventScreen> {
                                 ),
                       ),
                       const SizedBox(height: SpacingTokens.space16),
-                      BlocBuilder<OutingsBloc, OutingsState>(
+                      BlocBuilder<MeetingsBloc, MeetingsState>(
                         builder: (context, state) {
-                          if (state is OutingsLoaded) {
-                            final outings = (state as OutingsLoaded)
-                                .outings
-                                .where((o) => !o.isPast)
+                          if (state is MeetingsLoaded) {
+                            final meetings = (state as MeetingsLoaded)
+                                .meetings
+                                .where((m) => !m.isPast)
                                 .toList();
                             return Column(
-                              children: outings.map((outing) {
-                                return RadioListTile<Outing>(
-                                  value: outing,
-                                  groupValue: _selectedOuting,
+                              children: meetings.map((meeting) {
+                                return RadioListTile<Meeting>(
+                                  value: meeting,
+                                  groupValue: _selectedMeeting,
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedOuting = value;
+                                      _selectedMeeting = value;
                                     });
                                   },
-                                  title: Text(outing.location),
+                                  title: Text(meeting.location),
                                   subtitle: Text(
-                                    '${outing.location} - ${DateFormat('dd.MM.yyyy HH:mm').format(outing.date)}',
+                                    '${meeting.location} - ${DateFormat('dd.MM.yyyy HH:mm').format(meeting.date)}',
                                   ),
                                 );
                               }).toList(),

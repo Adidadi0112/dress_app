@@ -1,9 +1,11 @@
 import 'package:dress_app/screens/wardrobe_screen.dart';
-import 'package:dress_app/screens/outings/outings_screen.dart';
+import 'package:dress_app/screens/meetings/meetings_screen.dart';
 import 'package:dress_app/screens/friends/friends_screen.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
+import 'package:dress_app/widgets/responsive_layout.dart';
 import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/theme/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -25,8 +27,7 @@ class AccountScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(SpacingTokens.space16),
+        child: ResponsiveContainer(
           child: Column(
             children: [
               // Profile Header
@@ -102,12 +103,12 @@ class AccountScreen extends StatelessWidget {
               _buildMenuCard(
                 context,
                 icon: Icons.event,
-                title: 'My Outings',
+                title: 'My Meetings',
                 subtitle: 'Plan and track your events',
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const OutingsScreen()),
+                        builder: (context) => const MeetingsScreen()),
                   );
                 },
               ),

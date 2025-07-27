@@ -8,6 +8,7 @@ import '../screens/add_item_screen.dart';
 import '../screens/category_items_screen.dart';
 import '../models/item.dart';
 import '../theme/tokens.dart';
+import '../theme/responsive.dart';
 
 class WardrobeScreen extends StatelessWidget {
   const WardrobeScreen({super.key});
@@ -25,7 +26,7 @@ class WardrobeScreen extends StatelessWidget {
             }
 
             return ListView(
-              padding: const EdgeInsets.all(16),
+              padding: ResponsiveHelper.getResponsivePadding(context),
               children: grouped.entries.map((entry) {
                 final category = entry.key;
                 final items = entry.value;

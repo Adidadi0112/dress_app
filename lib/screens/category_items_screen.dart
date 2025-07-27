@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../theme/tokens.dart';
+import '../theme/responsive.dart';
 
 class CategoryItemsScreen extends StatelessWidget {
   final String category;
@@ -21,7 +22,7 @@ class CategoryItemsScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(SpacingTokens.space16),
+        padding: ResponsiveHelper.getResponsivePadding(context),
         itemCount: items.length,
         itemBuilder: (context, index) {
           final item = items[index];

@@ -2,6 +2,7 @@ import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 import 'package:dress_app/widgets/modern_text_field.dart';
 import 'package:dress_app/theme/tokens.dart';
+import 'package:dress_app/theme/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessage {
@@ -50,15 +51,15 @@ class ChatScreen extends StatelessWidget {
           // Messages list
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(SpacingTokens.space16),
+              padding: ResponsiveHelper.getResponsivePadding(context),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final msg = _messages[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: SpacingTokens.space12),
                   child: Row(
-                    mainAxisAlignment: msg.isMe 
-                        ? MainAxisAlignment.end 
+                    mainAxisAlignment: msg.isMe
+                        ? MainAxisAlignment.end
                         : MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -66,13 +67,16 @@ class ChatScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(SpacingTokens.space8),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primaryContainer,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             Icons.assistant,
                             size: 16,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
                           ),
                         ),
                         const SizedBox(width: SpacingTokens.space8),
@@ -80,19 +84,32 @@ class ChatScreen extends StatelessWidget {
                       Flexible(
                         child: EnhancedCard(
                           child: Container(
-                            padding: const EdgeInsets.all(SpacingTokens.space12),
+                            padding:
+                                const EdgeInsets.all(SpacingTokens.space12),
                             decoration: BoxDecoration(
-                              color: msg.isMe 
-                                  ? Theme.of(context).colorScheme.primaryContainer
-                                  : Theme.of(context).colorScheme.surfaceVariant,
-                              borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                              color: msg.isMe
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .surfaceVariant,
+                              borderRadius:
+                                  BorderRadius.circular(RadiusTokens.radiusLg),
                             ),
                             child: Text(
                               msg.text,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     color: msg.isMe
-                                        ? Theme.of(context).colorScheme.onPrimaryContainer
-                                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
                                   ),
                             ),
                           ),
@@ -119,24 +136,26 @@ class ChatScreen extends StatelessWidget {
               },
             ),
           ),
-          
+
           // Input area
           EnhancedCard(
             child: Container(
-              padding: const EdgeInsets.all(SpacingTokens.space16),
+              padding: ResponsiveHelper.getResponsivePadding(context),
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceVariant,
-                        borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                        borderRadius:
+                            BorderRadius.circular(RadiusTokens.radiusLg),
                       ),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Ask me about fashion...',
                           hintStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(
@@ -156,7 +175,8 @@ class ChatScreen extends StatelessWidget {
                           Theme.of(context).colorScheme.secondary,
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
+                      borderRadius:
+                          BorderRadius.circular(RadiusTokens.radiusLg),
                     ),
                     child: IconButton(
                       onPressed: () {

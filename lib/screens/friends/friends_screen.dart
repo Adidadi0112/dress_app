@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_bloc.dart';
 import 'package:dress_app/blocs/friends/friends_event.dart';
 import 'package:dress_app/blocs/friends/friends_state.dart';
-import 'package:dress_app/blocs/outings/outings_bloc.dart';
+import 'package:dress_app/blocs/meetings/meetings_bloc.dart';
 import 'package:dress_app/models/friend.dart';
 import 'package:dress_app/screens/friends/invite_friend_screen.dart';
 import 'package:dress_app/screens/friends/invite_to_event_screen.dart';
@@ -97,10 +97,10 @@ class _FriendsScreenState extends State<FriendsScreen>
         final friend = friends[index];
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.primary,
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               child: friend.avatarUrl != null
                   ? Image.network(friend.avatarUrl!)
                   : Text(friend.name[0]),
@@ -199,7 +199,7 @@ class _FriendsScreenState extends State<FriendsScreen>
 
   void _inviteToEvent(Friend friend) async {
     // Load outings to make sure we have the latest data
-    context.read<OutingsBloc>().add(LoadOutings());
+    context.read<MeetingsBloc>().add(LoadMeetings());
 
     // Navigate to the invite to event screen with the selected friend
     final result = await Navigator.push(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:dress_app/theme/responsive.dart';
 
 class WarderobeTile extends StatelessWidget {
   final String? imagePath;
@@ -15,15 +16,14 @@ class WarderobeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
       child: Container(
-        width: size.width * 0.8,
-        height: size.height * 0.45,
+        width: ResponsiveHelper.getResponsiveCardWidth(context),
+        height: ResponsiveHelper.getResponsiveCardHeight(context),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
         ),
