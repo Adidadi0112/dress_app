@@ -1,11 +1,10 @@
-import 'package:dress_app/screens/home.dart';
-import 'package:dress_app/service/api.dart';
+import 'package:dress_app/services/firebase_auth_service.dart';
 import 'package:dress_app/widgets/gradient_button.dart';
 import 'package:dress_app/widgets/modern_text_field.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   final nameController = TextEditingController();
@@ -18,7 +17,6 @@ class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key, required this.onTap});
 
   void register(BuildContext context) async {
-    final navigator = Navigator.of(context);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     final name = nameController.text.trim();
@@ -43,19 +41,28 @@ class RegisterScreen extends StatelessWidget {
       return;
     }
 
-    final response = await Api().signUp({
-      "name": name,
-      "email": email,
-      "password": password,
-    });
-
-    if (response['type'] == 'success') {
-      navigator.pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+    try {
+      final authService =
+          Provider.of<FirebaseAuthService>(context, listen: false);
+      final response = await authService.signUp(
+        name: name,
+        email: email,
+        password: password,
       );
-    } else {
+
+      if (response['type'] == 'success') {
+        // Navigation will be handled automatically by the StreamBuilder in main.dart
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(content: Text("Account created successfully!")),
+        );
+      } else {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(content: Text(response['message'] ?? 'Registration failed')),
+        );
+      }
+    } catch (e) {
       scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text(response['data']['message'])),
+        SnackBar(content: Text('Registration failed: $e')),
       );
     }
   }

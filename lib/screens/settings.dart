@@ -1,11 +1,10 @@
-import 'package:dress_app/auth/login_or_register.dart';
 import 'package:dress_app/screens/theme_and_stickers.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/themes/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dress_app/service/auth_controller.dart';
+import 'package:dress_app/services/firebase_auth_service.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 
@@ -116,20 +115,24 @@ class SettingsScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final navigator = Navigator.of(context);
                     final optionModel = Provider.of<BottomAppBarOptionProvider>(
                       context,
                       listen: false,
                     );
 
-                    await AuthController().removeData();
+                    try {
+                      final authService = Provider.of<FirebaseAuthService>(
+                          context,
+                          listen: false);
+                      await authService.signOut();
 
-                    optionModel.selectOption(0);
-                    navigator.pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginOrRegister(),
-                      ),
-                    );
+                      optionModel.selectOption(0);
+                      // Navigation will be handled automatically by the StreamBuilder in main.dart
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Logout failed: $e')),
+                      );
+                    }
                   },
                   icon: Icon(Icons.logout),
                   label: Text('Logout'),

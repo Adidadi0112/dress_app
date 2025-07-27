@@ -1,11 +1,11 @@
-import 'package:dress_app/screens/home.dart';
-import 'package:dress_app/service/api.dart';
+import 'package:dress_app/services/firebase_auth_service.dart';
 import 'package:dress_app/widgets/gradient_button.dart';
 import 'package:dress_app/widgets/modern_text_field.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   // text editing controllers
@@ -17,31 +17,37 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required this.onTap});
 
   void login(BuildContext context) async {
-    final navigator = Navigator.of(context); // Save before await
     final scaffoldMessenger = ScaffoldMessenger.of(context); // for SnackBar
 
-    final username = usernameController.text.trim();
+    final email = usernameController.text.trim();
     final password = passwordController.text.trim();
 
-    if (username.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty) {
       scaffoldMessenger.showSnackBar(
         const SnackBar(content: Text("Please enter both email and password.")),
       );
       return;
     }
 
-    final response = await Api().login({
-      "email": username,
-      "password": password,
-    });
-
-    if (response['type'] == 'success') {
-      navigator.pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+    try {
+      final authService =
+          Provider.of<FirebaseAuthService>(context, listen: false);
+      final response = await authService.signIn(
+        email: email,
+        password: password,
       );
-    } else {
+
+      if (response['type'] == 'success') {
+        // Navigation will be handled automatically by the StreamBuilder in main.dart
+        // No need to manually navigate
+      } else {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(content: Text(response['message'] ?? 'Login failed')),
+        );
+      }
+    } catch (e) {
       scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text(response['data']['message'])),
+        SnackBar(content: Text('Login failed: $e')),
       );
     }
   }
