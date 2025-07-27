@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 
 abstract class ClothingItemState extends Equatable {
   const ClothingItemState();
@@ -13,7 +13,7 @@ class ClothingItemInitial extends ClothingItemState {}
 class ClothingItemLoading extends ClothingItemState {}
 
 class ClothingItemLoaded extends ClothingItemState {
-  final List<ClothingItem> items;
+  final List<Item> items;
 
   const ClothingItemLoaded(this.items);
 
@@ -32,7 +32,7 @@ class ClothingItemError extends ClothingItemState {
 
 class ClothingItemActionSuccess extends ClothingItemState {
   final String message;
-  final List<ClothingItem> items;
+  final List<Item> items;
 
   const ClothingItemActionSuccess(this.message, this.items);
 

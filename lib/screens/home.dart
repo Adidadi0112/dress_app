@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dress_app/blocs/item/item_bloc.dart';
 import 'package:dress_app/blocs/item/item_state.dart';
+import 'package:dress_app/blocs/item/item_event.dart';
 import 'package:dress_app/models/item.dart';
 import 'package:dress_app/screens/settings.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
@@ -27,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+    // Load clothing items from Firebase
+    context.read<ItemBloc>().add(FetchItems());
   }
 
   Future<void> _loadUserData() async {

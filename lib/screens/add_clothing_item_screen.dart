@@ -5,7 +5,7 @@ import 'package:dress_app/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_bloc.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_event.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_state.dart';
@@ -111,7 +111,7 @@ class _AddClothingItemScreenState extends State<AddClothingItemScreen> {
       return;
     }
 
-    final item = ClothingItem(
+    final item = Item(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: _nameController.text.trim(),
       description: _descriptionController.text.trim().isEmpty

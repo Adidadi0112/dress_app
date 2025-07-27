@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 
 abstract class ClothingItemEvent extends Equatable {
   const ClothingItemEvent();
@@ -11,7 +11,7 @@ abstract class ClothingItemEvent extends Equatable {
 class LoadClothingItems extends ClothingItemEvent {}
 
 class AddClothingItem extends ClothingItemEvent {
-  final ClothingItem item;
+  final Item item;
 
   const AddClothingItem(this.item);
 
@@ -21,7 +21,7 @@ class AddClothingItem extends ClothingItemEvent {
 
 class UpdateClothingItem extends ClothingItemEvent {
   final String itemId;
-  final ClothingItem item;
+  final Item item;
 
   const UpdateClothingItem(this.itemId, this.item);
 

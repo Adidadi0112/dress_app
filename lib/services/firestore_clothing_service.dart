@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 
 class FirestoreClothingService {
   static final FirestoreClothingService _instance =
@@ -24,7 +24,7 @@ class FirestoreClothingService {
   }
 
   /// Create a new clothing item
-  Future<Map<String, dynamic>> createClothingItem(ClothingItem item) async {
+  Future<Map<String, dynamic>> createClothingItem(Item item) async {
     try {
       if (_clothingItemsCollection == null) {
         return {
@@ -71,9 +71,9 @@ class FirestoreClothingService {
           .orderBy('createdAt', descending: true)
           .get();
 
-      List<ClothingItem> items = querySnapshot.docs.map((doc) {
+      List<Item> items = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return ClothingItem.fromMap(data, doc.id);
+        return Item.fromMap(data, doc.id);
       }).toList();
 
       return {
@@ -89,7 +89,7 @@ class FirestoreClothingService {
   }
 
   /// Get clothing items stream for real-time updates
-  Stream<List<ClothingItem>>? getClothingItemsStream() {
+  Stream<List<Item>>? getClothingItemsStream() {
     if (_clothingItemsCollection == null) return null;
 
     return _clothingItemsCollection!
@@ -98,14 +98,14 @@ class FirestoreClothingService {
         .map((snapshot) {
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return ClothingItem.fromMap(data, doc.id);
+        return Item.fromMap(data, doc.id);
       }).toList();
     });
   }
 
   /// Update a clothing item
   Future<Map<String, dynamic>> updateClothingItem(
-      String itemId, ClothingItem item) async {
+      String itemId, Item item) async {
     try {
       if (_clothingItemsCollection == null) {
         return {
@@ -178,7 +178,7 @@ class FirestoreClothingService {
       }
 
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      ClothingItem item = ClothingItem.fromMap(data, doc.id);
+      Item item = Item.fromMap(data, doc.id);
 
       return {
         'type': 'success',
@@ -193,7 +193,7 @@ class FirestoreClothingService {
   }
 
   /// Get clothing items by category
-  Future<List<ClothingItem>> getClothingItemsByCategory(String category) async {
+  Future<List<Item>> getClothingItemsByCategory(String category) async {
     try {
       if (_clothingItemsCollection == null) return [];
 
@@ -204,7 +204,7 @@ class FirestoreClothingService {
 
       return querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return ClothingItem.fromMap(data, doc.id);
+        return Item.fromMap(data, doc.id);
       }).toList();
     } catch (e) {
       return [];
@@ -212,7 +212,7 @@ class FirestoreClothingService {
   }
 
   /// Get clothing items by occasion
-  Future<List<ClothingItem>> getClothingItemsByOccasion(String occasion) async {
+  Future<List<Item>> getClothingItemsByOccasion(String occasion) async {
     try {
       if (_clothingItemsCollection == null) return [];
 
@@ -223,7 +223,7 @@ class FirestoreClothingService {
 
       return querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return ClothingItem.fromMap(data, doc.id);
+        return Item.fromMap(data, doc.id);
       }).toList();
     } catch (e) {
       return [];

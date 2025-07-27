@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'item_event.dart';
 import 'item_state.dart';
-import '../../services/firestore_service.dart';
+import '../../services/firestore_clothing_service.dart';
 import '../../models/item.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
@@ -14,7 +14,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   Future<void> _onFetchItems(FetchItems event, Emitter<ItemState> emit) async {
     emit(ItemLoading());
     try {
-      final response = await FirestoreService().getItems();
+      final response = await FirestoreClothingService().getClothingItems();
       if (response['type'] == 'success') {
         final List<Item> items = response['data'] as List<Item>;
         emit(ItemLoaded(items));

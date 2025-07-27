@@ -1,15 +1,14 @@
 import 'dart:io';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/item/item_bloc.dart';
 import '../../blocs/item/item_state.dart';
-import '../../models/item.dart';
 import '../../widgets/enhanced_card.dart';
 import '../../theme/responsive.dart';
 
 class SelectClothesScreen extends StatefulWidget {
-  final List<ClothingItem> initiallySelected;
+  final List<Item> initiallySelected;
 
   const SelectClothesScreen({
     super.key,
@@ -21,23 +20,12 @@ class SelectClothesScreen extends StatefulWidget {
 }
 
 class _SelectClothesScreenState extends State<SelectClothesScreen> {
-  late List<ClothingItem> _selectedItems;
+  late List<Item> _selectedItems;
 
   @override
   void initState() {
     super.initState();
     _selectedItems = List.from(widget.initiallySelected);
-  }
-
-  ClothingItem _convertItemToClothingItem(Item item) {
-    return ClothingItem(
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      imageUrl: item.imageUrl,
-      categories: item.categories ?? [],
-      occasions: item.occasions ?? [],
-    );
   }
 
   @override
@@ -133,7 +121,6 @@ class _SelectClothesScreenState extends State<SelectClothesScreen> {
                     itemCount: state.items.length,
                     itemBuilder: (context, index) {
                       final item = state.items[index];
-                      final clothingItem = _convertItemToClothingItem(item);
                       final isSelected = _selectedItems
                           .any((selected) => selected.id == item.id);
 
@@ -144,7 +131,7 @@ class _SelectClothesScreenState extends State<SelectClothesScreen> {
                               _selectedItems.removeWhere(
                                   (selected) => selected.id == item.id);
                             } else {
-                              _selectedItems.add(clothingItem);
+                              _selectedItems.add(item);
                             }
                           });
                         },

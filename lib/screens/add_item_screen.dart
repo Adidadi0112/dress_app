@@ -57,7 +57,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
       name: name,
       description: description,
       categories: [category],
+      occasions: [], // Empty occasions list for now
       imageUrl: _selectedImage!.path,
+      createdAt: DateTime.now(),
     );
 
     // 👇 Debug print
@@ -104,6 +106,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter an item name';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(height: SpacingTokens.space16),
@@ -116,6 +119,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a category';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(height: SpacingTokens.space16),
@@ -129,6 +133,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a description';
                         }
+                        return null;
                       },
                     ),
                   ],

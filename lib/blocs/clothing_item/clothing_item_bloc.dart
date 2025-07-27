@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_event.dart';
 import 'package:dress_app/blocs/clothing_item/clothing_item_state.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 import 'package:dress_app/services/firestore_clothing_service.dart';
 import 'package:dress_app/services/firebase_storage_service.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +30,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
       final result = await _firestoreService.getClothingItems();
 
       if (result['type'] == 'success') {
-        final items = result['data'] as List<ClothingItem>;
+        final items = result['data'] as List<Item>;
         emit(ClothingItemLoaded(items));
         debugPrint('ClothingItemBloc: Loaded ${items.length} items');
       } else {
@@ -51,7 +51,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
     try {
       emit(ClothingItemLoading());
 
-      ClothingItem itemToAdd = event.item;
+      Item itemToAdd = event.item;
 
       // If there's a local image, upload it to Firebase Storage first
       if (event.item.imageUrl != null && event.item.imageUrl!.startsWith('/')) {
@@ -81,7 +81,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
         final updatedResult = await _firestoreService.getClothingItems();
 
         if (updatedResult['type'] == 'success') {
-          final items = updatedResult['data'] as List<ClothingItem>;
+          final items = updatedResult['data'] as List<Item>;
           emit(ClothingItemActionSuccess('Item added successfully!', items));
           debugPrint('ClothingItemBloc: Item added successfully');
         } else {
@@ -105,7 +105,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
     try {
       emit(ClothingItemLoading());
 
-      ClothingItem itemToUpdate = event.item;
+      Item itemToUpdate = event.item;
 
       // If there's a new local image, upload it to Firebase Storage
       if (event.item.imageUrl != null && event.item.imageUrl!.startsWith('/')) {
@@ -136,7 +136,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
         final updatedResult = await _firestoreService.getClothingItems();
 
         if (updatedResult['type'] == 'success') {
-          final items = updatedResult['data'] as List<ClothingItem>;
+          final items = updatedResult['data'] as List<Item>;
           emit(ClothingItemActionSuccess('Item updated successfully!', items));
           debugPrint('ClothingItemBloc: Item updated successfully');
         } else {
@@ -165,7 +165,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
       final getResult = await _firestoreService.getClothingItem(event.itemId);
 
       if (getResult['type'] == 'success') {
-        final item = getResult['data'] as ClothingItem;
+        final item = getResult['data'] as Item;
 
         // Delete the image from Firebase Storage if it exists
         if (item.imageUrl != null &&
@@ -184,7 +184,7 @@ class ClothingItemBloc extends Bloc<ClothingItemEvent, ClothingItemState> {
         final updatedResult = await _firestoreService.getClothingItems();
 
         if (updatedResult['type'] == 'success') {
-          final items = updatedResult['data'] as List<ClothingItem>;
+          final items = updatedResult['data'] as List<Item>;
           emit(ClothingItemActionSuccess('Item deleted successfully!', items));
           debugPrint('ClothingItemBloc: Item deleted successfully');
         } else {

@@ -10,8 +10,6 @@ import 'package:dress_app/blocs/item/item_event.dart';
 import 'package:dress_app/blocs/meetings/meetings_bloc.dart';
 import 'package:dress_app/blocs/meetings/meetings_event.dart';
 import 'package:dress_app/blocs/friends/friends_bloc.dart';
-import 'package:dress_app/blocs/clothing_item/clothing_item_bloc.dart';
-import 'package:dress_app/blocs/clothing_item/clothing_item_event.dart';
 import 'package:dress_app/themes/theme_provider.dart';
 import 'package:dress_app/widgets/bottom_navigator.dart';
 import 'package:dress_app/services/firebase_auth_service.dart';
@@ -38,8 +36,6 @@ void main() async {
             create: (_) => MeetingsBloc()..add(LoadMeetings())),
         BlocProvider<FriendsBloc>(
             create: (_) => FriendsBloc()..add(LoadFriends())),
-        BlocProvider<ClothingItemBloc>(
-            create: (_) => ClothingItemBloc()..add(LoadClothingItems())),
       ],
       child: MultiProvider(
         providers: [

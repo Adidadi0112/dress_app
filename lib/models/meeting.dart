@@ -1,11 +1,11 @@
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 
 class Meeting {
   final String id;
   final String location;
   final DateTime date;
   final List<String> participants;
-  final List<ClothingItem> wornItems;
+  final List<Item> wornItems;
   final String? foodNotes;
   final bool isPast;
   final DateTime? createdAt;
@@ -29,7 +29,7 @@ class Meeting {
     String? location,
     DateTime? date,
     List<String>? participants,
-    List<ClothingItem>? wornItems,
+    List<Item>? wornItems,
     String? foodNotes,
     bool? isPast,
     DateTime? createdAt,
@@ -56,7 +56,7 @@ class Meeting {
       participants: List<String>.from(map['participants'] ?? []),
       wornItems: (map['wornItems'] as List?)
               ?.map(
-                (item) => ClothingItem.fromMap(
+                (item) => Item.fromMap(
                   item as Map<String, dynamic>,
                   item['id'] ?? '',
                 ),
@@ -65,12 +65,10 @@ class Meeting {
           [],
       foodNotes: map['foodNotes'],
       isPast: map['isPast'] ?? false,
-      createdAt: map['createdAt'] != null 
-          ? DateTime.parse(map['createdAt']) 
-          : null,
-      updatedAt: map['updatedAt'] != null 
-          ? DateTime.parse(map['updatedAt']) 
-          : null,
+      createdAt:
+          map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
+      updatedAt:
+          map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
     );
   }
 

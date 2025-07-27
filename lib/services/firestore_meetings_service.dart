@@ -64,9 +64,8 @@ class FirestoreMeetingsService {
         };
       }
 
-      QuerySnapshot querySnapshot = await _meetingsCollection!
-          .orderBy('date', descending: false)
-          .get();
+      QuerySnapshot querySnapshot =
+          await _meetingsCollection!.orderBy('date', descending: false).get();
 
       List<Meeting> meetings = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -268,7 +267,7 @@ class FirestoreMeetingsService {
       }
 
       Meeting meeting = meetingResult['data'] as Meeting;
-      
+
       // Check if friend is already a participant
       if (meeting.participants.contains(friendName)) {
         return {
@@ -317,7 +316,7 @@ class FirestoreMeetingsService {
       }
 
       Meeting meeting = meetingResult['data'] as Meeting;
-      
+
       // Remove friend from participants
       List<String> updatedParticipants = List.from(meeting.participants);
       updatedParticipants.remove(friendName);

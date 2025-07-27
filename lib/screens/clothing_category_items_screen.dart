@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dress_app/models/clothing_item.dart';
+import 'package:dress_app/models/item.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/theme/responsive.dart';
 import 'package:dress_app/widgets/enhanced_card.dart';
 
 class ClothingCategoryItemsScreen extends StatelessWidget {
   final String category;
-  final List<ClothingItem> items;
+  final List<Item> items;
 
   const ClothingCategoryItemsScreen({
     super.key,
@@ -78,7 +78,7 @@ class ClothingCategoryItemsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildItemCard(BuildContext context, ClothingItem item) {
+  Widget _buildItemCard(BuildContext context, Item item) {
     return EnhancedCard(
       child: InkWell(
         borderRadius: BorderRadius.circular(RadiusTokens.radiusLg),
@@ -232,7 +232,7 @@ class ClothingCategoryItemsScreen extends StatelessWidget {
     }
   }
 
-  void _showItemDetails(BuildContext context, ClothingItem item) {
+  void _showItemDetails(BuildContext context, Item item) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -243,7 +243,7 @@ class ClothingCategoryItemsScreen extends StatelessWidget {
 }
 
 class _ItemDetailsBottomSheet extends StatelessWidget {
-  final ClothingItem item;
+  final Item item;
 
   const _ItemDetailsBottomSheet({required this.item});
 

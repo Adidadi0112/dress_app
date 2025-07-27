@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dress_app/blocs/clothing_item/clothing_item_bloc.dart';
-import 'package:dress_app/blocs/clothing_item/clothing_item_event.dart';
-import 'package:dress_app/blocs/clothing_item/clothing_item_state.dart';
-import 'package:dress_app/models/clothing_item.dart';
-import 'package:dress_app/screens/add_clothing_item_screen.dart';
+import 'package:dress_app/blocs/item/item_bloc.dart';
+import 'package:dress_app/blocs/item/item_event.dart';
+import 'package:dress_app/blocs/item/item_state.dart';
+import 'package:dress_app/models/item.dart';
+import 'package:dress_app/screens/add_item_screen.dart';
 import 'package:dress_app/screens/clothing_category_items_screen.dart';
 import 'package:dress_app/theme/tokens.dart';
 import 'package:dress_app/theme/responsive.dart';
@@ -22,7 +22,7 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
   void initState() {
     super.initState();
     // Load clothing items when screen initializes
-    context.read<ClothingItemBloc>().add(LoadClothingItems());
+    context.read<ItemBloc>().add(FetchItems());
   }
 
   @override
@@ -36,11 +36,11 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          context.read<ClothingItemBloc>().add(LoadClothingItems());
+          context.read<ItemBloc>().add(FetchItems());
         },
-        child: BlocBuilder<ClothingItemBloc, ClothingItemState>(
+        child: BlocBuilder<ItemBloc, ItemState>(
           builder: (context, state) {
-            if (state is ClothingItemLoading) {
+            if (state is ItemLoading) {
               return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +53,7 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
               );
             }
 
-            if (state is ClothingItemError) {
+            if (state is ItemError) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,9 +77,7 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
                     const SizedBox(height: SpacingTokens.space16),
                     ElevatedButton.icon(
                       onPressed: () {
-                        context
-                            .read<ClothingItemBloc>()
-                            .add(LoadClothingItems());
+                        context.read<ItemBloc>().add(FetchItems());
                       },
                       icon: const Icon(Icons.refresh),
                       label: const Text('Retry'),
@@ -89,15 +87,11 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
               );
             }
 
-            if (state is ClothingItemLoaded ||
-                state is ClothingItemActionSuccess) {
-              List<ClothingItem> items;
+            if (state is ItemLoaded) {
+              List<Item> items;
 
-              if (state is ClothingItemLoaded) {
-                items = state.items;
-              } else {
-                items = (state as ClothingItemActionSuccess).items;
-              }
+              items = state.items;
+              items = state.items;
 
               if (items.isEmpty) {
                 return _buildEmptyState();
@@ -134,8 +128,8 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
           await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
-                value: context.read<ClothingItemBloc>(),
-                child: const AddClothingItemScreen(),
+                value: context.read<ItemBloc>(),
+                child: const AddItemScreen(),
               ),
             ),
           );
@@ -192,8 +186,8 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => BlocProvider.value(
-                      value: context.read<ClothingItemBloc>(),
-                      child: const AddClothingItemScreen(),
+                      value: context.read<ItemBloc>(),
+                      child: const AddItemScreen(),
                     ),
                   ),
                 );
@@ -213,7 +207,7 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
     );
   }
 
-  Widget _buildStatsCard(List<ClothingItem> items) {
+  Widget _buildStatsCard(List<Item> items) {
     final categories = _groupItemsByCategory(items);
 
     return EnhancedCard(
@@ -294,9 +288,8 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
     );
   }
 
-  Map<String, List<ClothingItem>> _groupItemsByCategory(
-      List<ClothingItem> items) {
-    final Map<String, List<ClothingItem>> grouped = {};
+  Map<String, List<Item>> _groupItemsByCategory(List<Item> items) {
+    final Map<String, List<Item>> grouped = {};
     for (final item in items) {
       for (final category in item.categories) {
         grouped.putIfAbsent(category, () => []).add(item);
@@ -308,7 +301,7 @@ class _ClothingWardrobeScreenState extends State<ClothingWardrobeScreen> {
   Widget _buildCategoryCard(
     BuildContext context,
     String category,
-    List<ClothingItem> items,
+    List<Item> items,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
     final colorIndex = category.length % 4;
